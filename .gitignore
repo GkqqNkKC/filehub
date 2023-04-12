@@ -1,1 +1,5 @@
 .vs
+*/node_modules
+*/package-lock.json
+*/package.json
+client_src/client.html
