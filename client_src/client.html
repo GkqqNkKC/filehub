@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Example Front-End</title>
+</head>
+<body>
+    <label for="response">Response:</label>
+    <input type="text" id="response" readonly><br><br>
+    <button onclick="makeRequest()">Get Shared Data</button>
+
+    <script>
+        function makeRequest() {
+            const url = "http://127.0.0.1:7523/shared";
+            const responseBox = document.getElementById("response");
+
+            fetch(url, {
+                method: 'GET',
+                mode: 'cors',
+                credentials: 'omit'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    responseBox.value = data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
