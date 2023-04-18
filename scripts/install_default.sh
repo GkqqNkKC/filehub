@@ -1,5 +1,5 @@
 #!/bin/bash
-apt install -y npm &&
+apt install -y npm scss &&
 
 # server_src related
 cd $(dirname "${BASH_SOURCE[0]}")/../server_src &&

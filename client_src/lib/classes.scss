@@ -1,0 +1,55 @@
+.lib_window {
+  background: var(--lib_bg);
+  padding: var(--lib_spacing);
+  color: var(--lib_fg);
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0px;
+  --lib_sel_color: var(--lib_bg_border);
+}
+
+.lib_border {
+  padding: var(--lib_spacing);
+  border: 1px solid var(--lib_bg_border);
+  border-bottom-width: 2px;
+}
+
+lib_txt.lib_wrap {
+  white-space: break-spaces;
+}
+.lib_wrap:not(lib_txt) {
+  flex-wrap: wrap;
+}
+
+.lib_cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lib_progress::before {
+  content: "";
+  width: var(--lib_progress);
+  height: 100%;
+  position: absolute;
+  background: var(--lib_bg_progress);
+  margin: calc(0px - var(--lib_spacing));
+  z-index: -1;
+  border-radius: calc(var(--lib_spacing) / 2);
+}
+.lib_progress {
+  z-index: 0;
+
+  border-radius: var(--lib_spacing);
+  padding: calc(var(--lib_spacing));
+
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--lib_bg_border);
+  border-bottom-width: 2px;
+
+  color: var(--lib_fg);
+  --lib_sel_color: var(--lib_bg_border);
+}

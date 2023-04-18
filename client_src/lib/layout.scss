@@ -1,0 +1,47 @@
+/* [lib_row] */
+
+lib_row {
+  @extend .lib_element;
+  display: flex;
+  flex-direction: row;
+  gap: var(--lib_spacing);
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+}
+lib_row:not(.lib_align_content_end, .lib_align_content_start, .lib_align_items_end, .lib_align_items_start) > * {margin-top: auto; margin-bottom: auto;}
+lib_row:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:first-child {margin-left: auto;}
+lib_row:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:not(.lib_absolute):last-child {margin-right: auto;}
+
+/* [lib_col] */
+
+lib_col {
+  @extend .lib_element;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lib_spacing);
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+}
+lib_col:not(.lib_align_content_end, .lib_align_content_start, .lib_align_items_end, .lib_align_items_start) > * {margin-left: auto; margin-right: auto;}
+lib_col:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:first-child {margin-top: auto;}
+lib_col:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:not(.lib_absolute):last-child {margin-bottom: auto;}
+
+/* [lib_grid] */
+
+lib_grid {
+  @extend .lib_element;
+  display: grid;
+  gap: var(--lib_spacing);
+  align-items: center;
+  justify-items: center;
+}
+lib_grid > * { /* higher specifity required */
+  width: 100%; height: 100%;
+}
+
+/* [lib_txt] */
+
+lib_txt {@extend .lib_element}
+lib_txt > * {display: inline-block; vertical-align: middle;}

@@ -1,0 +1,20 @@
+@import "lib/include.scss";
+icon {
+  @extend .lib_element;
+  font-family: 'Material Symbols Rounded';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+
+  color: var(--accent);
+}
+lib_txt > icon {margin-top: -2px;}
+
+.lib_element {
+  --accent: #ffa31a;
+}
+.lib_window {
+  font-size: 5mm;
+}
+.layout_pad {
+  gap: 10mm;
+  padding: 10mm;
+}

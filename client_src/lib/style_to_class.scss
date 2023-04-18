@@ -1,0 +1,17 @@
+.lib_absolute_center_col.lib_absolute_center_row {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.lib_absolute_center_col:not(.lib_absolute_center_row) {position: absolute; top: 50%; transform: translate(0%, -50%);}
+.lib_absolute_center_row:not(.lib_absolute_center_col) {position: absolute; left: 50%; transform: translate(-50%, 0%);}
+.lib_align_content_end {align-content: end;}
+.lib_align_content_start {align-content: start;}
+.lib_align_items_end {align-items: end;}
+.lib_align_items_start {align-items: start;}
+.lib_align_self_center {align-self: center;}
+.lib_align_self_flex_start {align-self: flex-start;}
+.lib_align_self_flex_end {align-self: flex-end;}
+.lib_justify_content_end {justify-content: end;}
+.lib_justify_content_space_evenly {justify-content: space-evenly;}
+.lib_justify_content_start {justify-content: start;}
+.lib_justify_items_end {justify-items: end;}
+.lib_justify_items_start {justify-items: start;}
+.lib_display_none {display: none;}
+.lib_pos_absolute {position: absolute;}
