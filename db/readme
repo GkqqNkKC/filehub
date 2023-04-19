@@ -1,0 +1,24 @@
+[tables]
+
+- file_comments
+  - query: create table file_comments (id integer primary key autoincrement, file integer not null, user integer not null, str text not null, foreign key (file) references files(id), foreign key (user) references users(id));
+  - similar as `file_permissions`
+  - str: an additional field containing the content of the comment
+- file_permissions
+  - query: create table file_permissions (id integer primary key autoincrement, file integer not null, user integer not null, foreign key (file) references files(id), foreign key (user) references users(id));
+  - file: the id of the file to which this entry refers to
+  - user: user id that is gonna have access to the file
+    - the owner does not need an entry of this kind for his own files
+- files
+  - query: create table files (id integer primary key autoincrement, owner integer not null, path text not null, foreign key (owner) references users(id));
+  - owner: the id of the user owning the file
+    - the owner does not necessarily need to have an entry in the `file_permissions` table for this specific file
+  - path: the local path of the file
+    - assuming we start in the root of the project, the final path to the file would be `db/files/${db_path}`
+    - we can use the current timestamp to generate the path name
+- users
+  - query: create table users (id integer primary key autoincrement, email text not null unique, password text not null);
+  - email: the email of the user
+  - password: the password of the user
+    - currently stored in plain form
+    - no special requirement needed (which is a risk)
