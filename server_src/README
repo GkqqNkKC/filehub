@@ -1,0 +1,62 @@
+Backend API
+
+This is the backend API for our application. It is built with Node.js and uses SQLite as its database.
+Endpoints
+POST /register
+
+Registers a new user to the database.
+
+Request body:
+
+json
+
+{
+    "email": "<user-email>",
+    "password": "<user-password>"
+}
+
+POST /add-comment
+
+Adds a new comment to a file.
+
+Request body:
+
+json
+
+{
+    "file": "<file-id>",
+    "user": "<user-id>",
+    "str": "<comment>"
+}
+
+POST /upload-file
+
+Uploads a new file to the database.
+
+Request body:
+
+json
+
+{
+    "email": "<user-email>",
+    "password": "<user-password>",
+    "owner": "<owner-id>"
+}
+
+Request files:
+
+json
+
+{
+    "file": "<file-data>"
+}
+
+Setup
+
+    Clone this repository
+    Install dependencies
+    Run the server using node server.js
+
+Database
+
+The database is located at ../db/db.db.
