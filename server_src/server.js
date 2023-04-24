@@ -30,7 +30,7 @@ app.post('/register', (req, res) => {
 // function to add a comment to a file
 app.post('/add-comment', (req, res) => {
     const { file, user, str } = req.body;
-    const sql = `INSERT INTO file_comments (file, user, str) VALUES (?, ?, ?)`;
+    const sql = 'INSERT INTO file_comments (file, user, str) VALUES (?, ?, ?)';
     db.run(sql, [file, user, str], function (err) {
         if (err) {
             res.status(400).send('Error adding comment to file');
