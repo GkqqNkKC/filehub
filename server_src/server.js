@@ -17,7 +17,7 @@ let db = new sqlite3.Database('../db/db.db');
 // register function to add a new user
 app.post('/register', (req, res) => {
     const { email, password } = req.body;
-    const sql = `INSERT INTO users (email, password) VALUES (?, ?)`;
+    const sql = 'INSERT INTO users (email, password) VALUES (?, ?)';
     db.run(sql, [email, password], function (err) {
         if (err) {
             res.status(400).send('Error registering user');
@@ -44,9 +44,9 @@ app.post('/add-comment', (req, res) => {
 app.post('/upload-file', (req, res) => {
     const { email, password, owner } = req.body;
     const timestamp = Date.now();
-    const db_path = `db/files/${timestamp}`;
-    const local_path = `../${db_path}`;
-    const userSql = `SELECT * FROM users WHERE email = ? AND password = ?`;
+    const db_path = 'db/files/${timestamp}';
+    const local_path = '../${db_path}';
+    const userSql = 'SELECT * FROM users WHERE email = ? AND password = ?';
     db.get(userSql, [email, password], function (err, row) {
         if (err) {
             res.status(400).send('Error uploading file');
@@ -55,7 +55,7 @@ app.post('/upload-file', (req, res) => {
         } else if (row.id !== owner) {
             res.status(403).send('Forbidden');
         } else {
-            const sql = `INSERT INTO files (owner, path) VALUES (?, ?)`;
+            const sql = 'INSERT INTO files (owner, path) VALUES (?, ?)';
             db.run(sql, [owner, db_path], function (err) {
                 if (err) {
                     res.status(400).send('Error uploading file');
@@ -77,5 +77,5 @@ app.post('/upload-file', (req, res) => {
 
 // start the server
 app.listen(port, hostname, function () {
-    console.log(`App listening on http://${hostname}:${port}`);
+    console.log('App listening on http://${hostname}:${port}');
 });
