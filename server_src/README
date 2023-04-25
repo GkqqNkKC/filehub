@@ -1,17 +1,17 @@
-Backend API
+﻿Backend API ✨🚀
 
-This is the backend API for our application, which provides the necessary endpoints to interact with the database. It is built with Node.js and uses SQLite as its database.
+Oh hey there! This is the magic backend API 🔮 for our application, which provides the necessary endpoints to interact with the database. It is built with Node.js 🎉 and uses SQLite as its database.
 
-## Endpoints ##
+## Endpoints 🔥
 -----------------------------------------------------------
-### POST /register
+### POST /register 📝
 -----------------------------------------------------------
 
-Registers a new user to the database.
+Abracadabra! Registers a new user to the database. ✨
 
 #### Request body:
 
-json
+🎁 json
 
 {
     "email": "<user-email>",
@@ -19,14 +19,14 @@ json
 }
 
 -----------------------------------------------------------
-### POST /login
+### POST /login 🔑
 -----------------------------------------------------------
 
-Verifies the user credentials.
+Shazam! Verifies the user credentials. 🔮
 
 #### Request body:
 
-json
+🎁 json
 
 {
     "email": "<user-email>",
@@ -34,14 +34,14 @@ json
 }
 
 -----------------------------------------------------------
-### POST /add-comment
+### POST /add-comment 💬
 -----------------------------------------------------------
 
-Adds a new comment to a file.
+Alakazam! Adds a new comment to a file. 💫
 
 #### Request body:
 
-json
+🎁 json
 
 {
     "file": "<file-id>",
@@ -50,14 +50,14 @@ json
 }
 
 -----------------------------------------------------------
-### POST /upload-file
+### POST /upload-file 📤
 -----------------------------------------------------------
 
-Uploads a new file to the database.
+Presto! Uploads a new file to the database. 🎊
 
 #### Request body:
 
-json
+🎁 json
 
 {
     "email": "<user-email>",
@@ -67,23 +67,23 @@ json
 
 #### Request files:
 
-json
+🎁 json
 
 {
     "file": "<file-data>"
 }
 
 -----------------------------------------------------------
-### GET /files/:timestamp
+### GET /files/:timestamp ⏬
 -----------------------------------------------------------
 
-Downloads a file with the given timestamp.
+Hocus pocus! Downloads a file with the given timestamp. 🎁
 
 #### Parameters:
 
-- `timestamp` - the timestamp of the file to be downloaded
+🔑 - `timestamp` - the timestamp of the file to be downloaded
 
-## Setup
+## Setup 🧰
 
 To use this API, please follow these steps:
 
@@ -91,6 +91,10 @@ To use this API, please follow these steps:
 2. Install dependencies using `npm install`.
 3. Run the server using `node server.js`.
 
-## Database
+## Database 📚
 
-The database is located at `../db/db.db`. Please make sure it exists before using the API.
+The database is located at `../db/db.db`. Please make sure it exists before using the API. 🧙‍♀️
+
+And remember, always keep a wand 🪄 nearby in case the magic goes awry! ✨
+
+Oh, and why did the wizard wear a hat? To cover up his "bad hair spell"! 🧙‍♂️💇‍♂️
