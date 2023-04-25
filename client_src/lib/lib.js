@@ -114,9 +114,6 @@ document.addEventListener(`DOMContentLoaded`, () => {
   lib.tooltip = document.createElement(`lib_row`);
   lib.tooltip.id = `lib_tooltip`;
   lib.tooltip.classList.add(`lib_absolute`);
-  lib.tooltip.style.display = `none`;
-  lib.tooltip.style[`pointer-events`] = `none`;
-  lib.tooltip.style[`background`] = `var(--lib_transparent)`;
   lib.window.append(lib.tooltip);
 
   lib.cache_spacing_size = lib.expensive_css_size_to_px(`var(--lib_spacing)`);
@@ -148,6 +145,50 @@ document.addEventListener(`DOMContentLoaded`, () => {
     lib.tooltip.style.left = `${left}px`;
     lib.tooltip.style.top = `${top}px`;
   });
+
+  // [lib_can_scroll]
+
+  let check_scroll = el => {
+    if(el.scrollHeight > el.clientHeight)
+      el.classList.add(`lib_can_scroll_col`);
+    else el.classList.remove(`lib_can_scroll_col`);
+    if(el.scrollWidth > el.clientWidth)
+      el.classList.add(`lib_can_scroll_row`);
+    else el.classList.remove(`lib_can_scroll_row`);
+  };
+
+  let resize_observer = new ResizeObserver(entries => {
+    for(entry of entries) check_scroll(entry.target);
+  })
+  for(let el of document.querySelectorAll(`.lib_window *, .lib_window, .lib_js_start, .lib_js_start *`)) {
+    check_scroll(el);
+    resize_observer.observe(el);
+  }
+
+  let mutation_observer = new MutationObserver(mutations => {
+    for(let mutation of mutations) {
+      if(mutation.type != `childList`) continue;
+
+      for(let node of mutation.addedNodes) {
+        if(node.nodeType != Node.ELEMENT_NODE) continue;
+        check_scroll(node);
+        resize_observer.observe(node);
+        for(let child of node.querySelectorAll(`*`)) {
+          check_scroll(child);
+          resize_observer.observe(child);
+        }
+      }
+
+      for(let node of mutation.removedNodes) {
+        if(node.nodeType != Node.ELEMENT_NODE) continue;
+        resize_observer.unobserve(node);
+        for(let child of node.querySelectorAll(`*`)) {
+          resize_observer.unobserve(child);
+        }
+      }
+    }
+  })
+  mutation_observer.observe(lib.window, {childList: true, subtree: true});
 
   // [experimental]
 

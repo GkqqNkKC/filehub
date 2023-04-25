@@ -13,6 +13,10 @@
   border: 1px solid var(--lib_bg_border);
   border-bottom-width: 2px;
 }
+.lib_card {
+  padding: var(--lib_spacing);
+  background: var(--lib_bg_card);
+}
 
 lib_txt.lib_wrap {
   white-space: break-spaces;
@@ -34,7 +38,7 @@ lib_txt.lib_wrap {
   width: var(--lib_progress);
   height: 100%;
   position: absolute;
-  background: var(--lib_bg_progress);
+  background: var(--lib_bg_card);
   margin: calc(0px - var(--lib_spacing));
   z-index: -1;
   border-radius: calc(var(--lib_spacing) / 2);

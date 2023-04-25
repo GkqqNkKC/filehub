@@ -5,12 +5,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 </head>
-<body style="margin: 0px"><lib_row class="lib_window lib_dark layout_pad">
+<body style="margin: 0px"><lib_row class="lib_window lib_dark layout_pad lib_justify_content_space_evenly">
 
 <lib_col class="lib_align_items_start" style="height: 100%; width: 220px">
-  <lib_row class="lib_align_self_center">File<lib_col style="padding: var(--lib_spacing); background: var(--accent); color: var(--lib_bg)">Hub</lib_col></lib_row>
+  <lib_row class="lib_align_self_center">File<lib_col style="padding: .25em; background: var(--accent); color: var(--lib_bg); border-radius: .25em;">Hub</lib_col></lib_row>
   <lib_row class="lib_justify_content_space_evenly" lib_each_child="child.style[`font-size`] = `10mm`;" style="width: 100%">
-    <icon class="lib_border" lib_tooltip="See all file you have access to" id="files">folder_open</icon>
+    <icon class="lib_card" lib_tooltip="See all file you have access to" id="files">folder_open</icon>
     <icon style="display: none" lib_tooltip="View your profile" id="profile">person</icon>
     <icon style="display: none" lib_tooltip="Upload a file" id="upload" onclick="upload_file()">add</icon>
     <icon style="display: none" lib_tooltip="Logout" id="logout">logout</icon>
@@ -18,19 +18,19 @@
                                           element.style.display = null;">add_circle</icon>
   </lib_row>
   <lib_col style="flex-grow: 1;"></lib_col>
-  <lib_col class="lib_border" style="width: 100%; height: 100px"></lib_col>
+  <lib_col class="lib_card" style="width: 100%; height: 100px"></lib_col>
   <lib_row lib_demo="10 6"><icon>person</icon></lib_row>
   <lib_row lib_demo="3"><icon>sd_card</icon></lib_row>
   <lib_row style="width: 100%">
-    <lib_row class="lib_border" style="flex-grow: 1"><icon>filter_alt</icon><lib_row>Shared</lib_row></lib_row>
-    <lib_row class="lib_border" style="flex-grow: 1"><icon>filter_alt</icon><lib_row>Access</lib_row></lib_row>
+    <lib_row class="lib_card" style="flex-grow: 1"><icon>filter_alt</icon><lib_row>Shared</lib_row></lib_row>
+    <lib_row class="lib_card" style="flex-grow: 1"><icon>filter_alt</icon><lib_row>Access</lib_row></lib_row>
   </lib_row>
   <lib_col style="flex-grow: 1;"></lib_col>
   <lib_col class="lib_align_items_start" style="width: 100%" lib_demo="16 12 15"><lib_row><icon>update</icon>Latest updates</lib_row></lib_col>
 </lib_col>
-<lib_col class="lib_align_self_center" style="flex-grow: 1; height: 100%">
+<lib_col class="lib_align_self_center" style="flex-grow: 1; height: 100%; max-width: 150mm;">
   <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input></lib_row>
-  <lib_grid lib_each_child="child.classList.add(`lib_border`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content">
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content">
     <lib_row lib_demo="8"><icon>description</icon></lib_row>
     <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
     <lib_row><icon>delete</icon></lib_row>
@@ -68,7 +68,7 @@
 </lib_col>
 <lib_col class="lib_align_self_center" style="width: 300px; height: 100%;">
   <!-- <icon style="font-size: 30mm; align-self: center; color: var(--lib_background_progress)">description</icon> -->
-  <lib_grid lib_each_child="child.classList.add(`lib_border`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: 1fr 1fr;">
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: 1fr 1fr;">
     <lib_row lib_demo="8"><icon>description</icon></lib_row>
     <lib_row lib_demo="6"><icon>sd_card</icon></lib_row>
     <lib_row lib_demo="8"><icon>schedule</icon></lib_row>
@@ -77,8 +77,8 @@
     <lib_row lib_demo="3"><icon>download</icon></lib_row>
     <lib_row style="grid-column: 1/3;" lib_demo="10 8"><icon>info</icon></lib_row>
   </lib_grid>
-  <lib_col class="lib_border lib_align_items_start" style="width: 100%; height: 150px"></lib_col>
-  <!-- <svg lib_each_child="child.setAttribute(`stroke`, `blue`); child.setAttribute(`stroke-linecap`, `round`); child.setAttribute(`stroke-width`, `.05`);" preserveAspectRatio="none" viewbox="0 0 1 1" class="lib_border cartesian" style="width: 100%; height: 150px; align-items: start; padding: calc(var(--lib_spacing) + 2.5%); overflow: visible"><g>
+  <lib_col class="lib_card lib_align_items_start" style="width: 100%; height: 150px"></lib_col>
+  <!-- <svg lib_each_child="child.setAttribute(`stroke`, `blue`); child.setAttribute(`stroke-linecap`, `round`); child.setAttribute(`stroke-width`, `.05`);" preserveAspectRatio="none" viewbox="0 0 1 1" class="lib_card cartesian" style="width: 100%; height: 150px; align-items: start; padding: calc(var(--lib_spacing) + 2.5%); overflow: visible"><g>
     <line x1="0" y1="0" x2=".25" y2=".75"></line>
     <line x1=".25" y1=".75" x2=".5" y2=".5"></line>
     <line x1="0" y1="0" x2=".25" y2=".75"></line>
@@ -88,7 +88,7 @@
     <icon lib_tooltip="Download file">download</icon>
     <icon lib_tooltip="Reupload file with modifications">refresh</icon>
   </lib_row>
-  <lib_grid lib_each_child="child.classList.add(`lib_border`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;">
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;">
     <lib_row lib_demo="7"><icon>face</icon></lib_row>
     <lib_row lib_demo="5"><icon>edit</icon></lib_row>
     <lib_row><icon>delete</icon></lib_row>
@@ -106,18 +106,18 @@
     <icon lib_tooltip="Add a new person on the list">add</icon>
   </lib_row>
 </lib_col>
-<lib_row style="display: none" id="login_popup" class="lib_cover lib_transparent layout_pad">
+<lib_row style="display: none" id="login_popup" class="lib_cover lib_bg_transparent layout_pad">
   <lib_col>
-    <lib_row class="lib_align_self_center" style="font-size: 15mm;">File<lib_col style="padding: var(--lib_spacing); background: var(--accent); color: var(--lib_bg)">Hub</lib_col></lib_row>
-    <lib_txt class="lib_wrap" style="width: 400px; text-align: center;">Empower your files with FileHub - your ultimate file transfer platform!</lib_txt>
+    <lib_row class="lib_align_self_center" style="font-size: 15mm;">File<lib_col style="padding: .25em; background: var(--accent); color: var(--lib_bg); border-radius: .25em;">Hub</lib_col></lib_row>
+    <lib_txt class="lib_wrap" style="width: 400px;">Empower your files with FileHub - your ultimate file transfer platform!</lib_txt>
   </lib_col>
   <lib_col>
-    <lib_col class="lib_border">
+    <lib_col class="lib_card">
       <lib_row class="lib_justify_content_start" style="width: 300px" ><icon>mail</icon><input type="text" placeholder="Email"></input></lib_row>
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password"></input></lib_row>
       <lib_row><icon>login</icon>Login</lib_row>
     </lib_col>
-    <lib_col class="lib_border">
+    <lib_col class="lib_card">
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>mail</icon><input type="text" placeholder="Email" id="emailInputReg"></input></lib_row>
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password" id="passInputReg"></input></lib_row>
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Repeat password" id="passRepeatInputReg"></input></lib_row>
@@ -126,7 +126,7 @@
     </lib_col>
   </lib_col>
 </lib_row>
-<!-- <lib_row class="lib_overlay"><lib_col class="lib_border lib_root_color" style="width: 400px; height: 200px"></lib_col></lib_row> -->
+<!-- <lib_row class="lib_overlay"><lib_col class="lib_card lib_root_color" style="width: 400px; height: 200px"></lib_col></lib_row> -->
 
 </lib_row>
 <script>

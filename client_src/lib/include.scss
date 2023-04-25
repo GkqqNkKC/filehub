@@ -1,3 +1,5 @@
+/* - version: 2 */
+
 @import "element.scss";
 @import "style_to_class.scss";
 @import "layout.scss";
@@ -7,12 +9,14 @@
 /* [internal] */
 
 #lib_tooltip {
+  @extend .lib_border;
   display: none;
   position: absolute;
   border-radius: var(--lib_spacing);
   padding: var(--lib_spacing);
-  background: var(--lib_bg);
+  background: var(--lib_bg_transparent);
   z-index: 1;
+  pointer-events: none;
 }
 lib_demo {
   background: var(--lib_fg);

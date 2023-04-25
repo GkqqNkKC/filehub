@@ -29,7 +29,7 @@
     background: var(--lib_bg); /* Replace with the desired color */
   }
 
-  font-family: monospace; /* very useful if the symbols follow a grid */
+  font-family: "Roboto Mono", monospace; /* very useful if the symbols follow a grid */
 
   --lib_dark: hsl(0, 0%, 10%);
   --lib_light: hsl(0, 0%, 90%);

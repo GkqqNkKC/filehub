@@ -1,32 +1,31 @@
+/* [internal] */
+
+lib_centered_flex {
+  @extend .lib_element;
+  display: flex;
+  gap: var(--lib_spacing);
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
 /* [lib_row] */
 
 lib_row {
-  @extend .lib_element;
-  display: flex;
+  @extend lib_centered_flex;
   flex-direction: row;
-  gap: var(--lib_spacing);
-  align-items: center;
-  justify-items: center;
-  align-content: center;
 }
-lib_row:not(.lib_align_content_end, .lib_align_content_start, .lib_align_items_end, .lib_align_items_start) > * {margin-top: auto; margin-bottom: auto;}
-lib_row:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:first-child {margin-left: auto;}
-lib_row:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:not(.lib_absolute):last-child {margin-right: auto;}
+lib_row.lib_can_scroll_row {justify-content: unset !important;}
+lib_row.lib_can_scroll_col {align-content: unset !important;}
 
 /* [lib_col] */
 
 lib_col {
-  @extend .lib_element;
-  display: flex;
+  @extend lib_centered_flex;
   flex-direction: column;
-  gap: var(--lib_spacing);
-  align-items: center;
-  justify-items: center;
-  align-content: center;
 }
-lib_col:not(.lib_align_content_end, .lib_align_content_start, .lib_align_items_end, .lib_align_items_start) > * {margin-left: auto; margin-right: auto;}
-lib_col:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:first-child {margin-top: auto;}
-lib_col:not(.lib_justify_content_end, .lib_justify_content_space_evenly, .lib_justify_content_start, .lib_justify_items_end, .lib_justify_items_start) > *:not(.lib_absolute):last-child {margin-bottom: auto;}
+lib_col.lib_can_scroll_row {align-content: unset !important;}
+lib_col.lib_can_scroll_col {justify-content: unset !important;}
 
 /* [lib_grid] */
 
