@@ -1,24 +1,30 @@
 [tables]
 
-- file_comments
+✨ Behold the fabled Nexus of Knowledge, a mystical land where cosmic entities come together to weave their tales and share their wisdom! This enchanted realm houses a treasure trove of celestial libraries and arcane scrolls, safeguarded by the most powerful of magical incantations. As you traverse the labyrinthine pathways of this otherworldly domain, you will uncover the secrets of the universe, and perhaps even unravel the mysteries of your own existence. Fear not, brave adventurer, for the Nexus of Knowledge is ever-evolving, waiting for your contributions to its grand tapestry. So, gather your courage and embark upon this thrilling odyssey, exploring the boundless depths of our magical database! 🧝‍♀️✨🔮
+🚀 Blast off to our cosmic database! Here's your guided tour through the stellar galaxies of our data tables:
+
+🌠 file_comments - A place where celestial whispers take form
   - query: create table file_comments (id integer primary key autoincrement, file integer not null, user integer not null, str text not null, foreign key (file) references files(id), foreign key (user) references users(id));
-  - similar as `file_permissions`
-  - str: an additional field containing the content of the comment
-- file_permissions
+  - file_permissions' cosmic twin
+  - str: a magical scroll capturing the essence of a comment
+
+🔮 file_permissions - A realm of mystical access keys
   - query: create table file_permissions (id integer primary key autoincrement, file integer not null, user integer not null, permission text not null, foreign key (file) references files(id), foreign key (user) references users(id));
-  - file: the id of the file to which this entry refers to
-  - user: user id that is gonna have access to the file
-  - permission: "r" or "rw"
-    - <read> users can give read access to other users
-    - <read/write> users can also give read/write access
-- files
+  - file: the sacred tome's id, guiding us through the labyrinth of files
+  - user: a celestial being's id, granting passage to the enchanted realm
+  - permission: a magical incantation, "r" or "rw"
+    - <read> access granted to the arcane library
+    - <read/write> access to weave new spells within the scrolls
+
+📚 files - A celestial library of enchanted scrolls
   - query: create table files (id integer primary key autoincrement, path text not null);
-  - path: the local path of the file
-    - assuming we start in the root of the project, the final path to the file would be `db/files/${db_path}`
-    - we can use the current timestamp to generate the path name
-- users
+  - path: the mystic trail leading to the scroll's lair
+    - from the realm's heart, the final path unveils as `db/files/${db_path}`
+    - behold, the sands of time (current timestamp) reveal the path's name
+
+🧙‍♂️ users - A gathering of magical beings
   - query: create table users (id integer primary key autoincrement, email text not null unique, password text not null);
-  - email: the email of the user
-  - password: the password of the user
-    - currently stored in plain form
-    - no special requirement needed (which is a risk)
+  - email: the ethereal parchment bearing a user's identity
+  - password: the secret incantation of each celestial being
+    - alas, stored in plain sight for now
+    - beware, no magical wards protect its simplicity (a risk indeed!)
