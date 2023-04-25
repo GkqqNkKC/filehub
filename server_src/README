@@ -1,17 +1,15 @@
 Backend API
 
-This is the backend API for our application. It is built with Node.js and uses SQLite as its database.
+This is the backend API for our application, which provides the necessary endpoints to interact with the database. It is built with Node.js and uses SQLite as its database.
 
-##################################################################
-##Endpoints##
-##################################################################
+## Endpoints ##
+-----------------------------------------------------------
+### POST /register
+-----------------------------------------------------------
 
--------------------------------------------------------------------
-POST /register
--------------------------------------------------------------------
 Registers a new user to the database.
 
-Request body:
+#### Request body:
 
 json
 
@@ -20,13 +18,28 @@ json
     "password": "<user-password>"
 }
 
--------------------------------------------------------------------
-POST /add-comment
--------------------------------------------------------------------
+-----------------------------------------------------------
+### POST /login
+-----------------------------------------------------------
+
+Verifies the user credentials.
+
+#### Request body:
+
+json
+
+{
+    "email": "<user-email>",
+    "password": "<user-password>"
+}
+
+-----------------------------------------------------------
+### POST /add-comment
+-----------------------------------------------------------
 
 Adds a new comment to a file.
 
-Request body:
+#### Request body:
 
 json
 
@@ -36,13 +49,13 @@ json
     "str": "<comment>"
 }
 
--------------------------------------------------------------------
-POST /upload-file
--------------------------------------------------------------------
+-----------------------------------------------------------
+### POST /upload-file
+-----------------------------------------------------------
 
 Uploads a new file to the database.
 
-Request body:
+#### Request body:
 
 json
 
@@ -52,7 +65,7 @@ json
     "owner": "<owner-id>"
 }
 
-Request files:
+#### Request files:
 
 json
 
@@ -60,16 +73,24 @@ json
     "file": "<file-data>"
 }
 
-##################################################################
-## Setup ##
-##################################################################
+-----------------------------------------------------------
+### GET /files/:timestamp
+-----------------------------------------------------------
 
-    Clone this repository
-    Install dependencies
-    Run the server using node server.js
+Downloads a file with the given timestamp.
 
-##################################################################
-## Database ##
-##################################################################
+#### Parameters:
 
-The database is located at ../db/db.db.
+- `timestamp` - the timestamp of the file to be downloaded
+
+## Setup
+
+To use this API, please follow these steps:
+
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Run the server using `node server.js`.
+
+## Database
+
+The database is located at `../db/db.db`. Please make sure it exists before using the API.
