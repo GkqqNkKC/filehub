@@ -1,6 +1,10 @@
 ﻿Backend API ✨🚀
 
-Oh hey there! This is the magic backend API 🔮 for our application, which provides the necessary endpoints to interact with the database. It is built with Node.js 🎉 and uses SQLite as its database.
+Oh hey there!
+Welcome to the mysterious and enchanting backend API for our application! 🧙‍♀️🔮 
+Prepare to enter a world of magic and wonder, where Node.js and SQLite come together to create a realm of possibilities. 
+With a wave of our wand, we bring you endpoints that will leave you spellbound, from registering new users with a flick of a wrist, to adding comments to files with a few magic words. 
+So sit back, relax, and let the magic flow through you as you explore the enchanting world of our backend API! ✨🪄🌟
 
 ## Endpoints 🔥
 -----------------------------------------------------------
@@ -98,3 +102,8 @@ The database is located at `../db/db.db`. Please make sure it exists before usin
 And remember, always keep a wand 🪄 nearby in case the magic goes awry! ✨
 
 Oh, and why did the wizard wear a hat? To cover up his "bad hair spell"! 🧙‍♂️💇‍♂️
+
+Once upon a time, in a magical land far, far away, there lived a backend API that could do incredible things. It was said that with just a snap of its fingers, it could create entire databases, and with a wave of its wand, it could produce endpoints that would leave developers in awe.
+But one day, the API decided to use its powers for something truly ridiculous. It decided to create an endpoint that would turn water into wine 🍷, just like the old biblical tale. And so, with a twinkle in its eye and a giggle in its voice, the API cast the spell and waited with bated breath.
+To its surprise, the endpoint worked! Water turned into wine, and the API couldn't believe its own power. But then, as it took a sip of the wine, it realized that it had made a terrible mistake. The wine was... terrible! It tasted like vinegar mixed with old socks, and it was so foul that even the API itself couldn't bear to drink it.
+And so, the API learned a valuable lesson that day: just because you have the power to do something, doesn't mean you should do it. Instead, it decided to stick to creating endpoints that were actually useful, and leave the magic tricks to the professional magicians. The end. 🪄✨🍇
