@@ -118,6 +118,43 @@ app.get('/files/:timestamp', (req, res) => {
     });
 });
 
+// function to share a file with another user
+app.post('/share-file', (req, res) => {
+    const {
+        email,
+        password,
+        timestamp,
+        recipientEmail
+    } = req.body;
+    const db_path = `db/files/${timestamp}`;
+    const userSql = 'SELECT * FROM users WHERE email = ? AND password = ?';
+    db.get(userSql, [email, password], function (err, row) {
+        if (err) {
+            res.status(400).send('Error sharing file');
+        } else if (row === undefined) {
+            res.status(401).send('Unauthorized user');
+        } else {
+            const recipientSql = 'SELECT * FROM users WHERE email = ?';
+            db.get(recipientSql, [recipientEmail], function (err, recipientRow) {
+                if (err) {
+                    res.status(400).send('Error sharing file');
+                } else if (recipientRow === undefined) {
+                    res.status(404).send('Recipient not found');
+                } else {
+                    const sql = 'INSERT INTO file_shares (file, sender, recipient) VALUES (?, ?, ?)';
+                    db.run(sql, [db_path, row.id, recipientRow.id], function (err) {
+                        if (err) {
+                            res.status(400).send('Error sharing file');
+                        } else {
+                            res.status(200).send('File shared successfully');
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
 // start the server
 app.listen(port, hostname, function () {
     console.log(`App listening on http://${hostname}:${port}`);
