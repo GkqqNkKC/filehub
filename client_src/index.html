@@ -12,7 +12,10 @@
   <lib_row class="lib_justify_content_space_evenly" lib_each_child="child.style[`font-size`] = `10mm`;" style="width: 100%">
     <icon class="lib_card" lib_tooltip="See all file you have access to" id="files">folder_open</icon>
     <icon style="display: none" lib_tooltip="View your profile" id="profile">person</icon>
-    <icon style="display: none" lib_tooltip="Upload a file" id="upload" onclick="upload_file()">add</icon>
+    <label for="file-input">
+      <icon style="display: none" class="upload-icon" lib_tooltip="Upload a file" id="upload">add</icon>
+    </label>
+    <input type="file" id="file-input" onchange="handleFileInputChange(event)" style="display: none">
     <icon style="display: none" lib_tooltip="Logout" id="logout">logout</icon>
     <icon lib_tooltip="Register" id="register" onclick="var element = document.getElementById('login_popup');
                                           element.style.display = null;">add_circle</icon>
@@ -31,39 +34,7 @@
 <lib_col class="lib_align_self_center" style="flex-grow: 1; height: 100%; max-width: 150mm;">
   <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input></lib_row>
   <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content">
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="7"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="3"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 4"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="2"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="9 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="10 8"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
-    <lib_row lib_demo="12 2"><icon>info</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
+    
   </lib_grid>
 </lib_col>
 <lib_col class="lib_align_self_center" style="width: 300px; height: 100%;">
@@ -130,21 +101,29 @@
 
 </lib_row>
 <script>
-  function upload_file() {
+  let counter = 0;
+  let user_email;
+  let user_password;
+  let file;
+
+  function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
-    const email = "user-email"; // replace with actual user email
-    const password = "user-password"; // replace with actual user password
-    const ownerId = "owner-id"; // replace with actual owner ID
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("owner", ownerId);
+    const email = user_email;
+    const password = user_password;
+
     fetch(url, {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        email: email, 
+        password: password,
+        file: file
+        }),
       mode: 'cors',
       credentials: 'omit'
-    })
+      })
       .then(response => {
       //handle response            
       console.log(response);
@@ -156,6 +135,16 @@
       .catch(error => {
         //handle error
       });
+
+    //change upload button to delete button
+    const upl_id = "upl_" + id;
+    const del_id = "del_" + id;
+
+    const upload_button = document.getElementById(upl_id);
+    upload_button.style.display = "none";
+    const delete_button = document.getElementById(del_id);
+    delete_button.style.display = null;
+
   }
 
   function register(){
@@ -184,6 +173,8 @@
       //handle response            
       console.log(response);
       if (response.status == 200){
+        user_email = email;
+        user_password = password; 
         const popup = document.getElementById("login_popup");
         popup.style.display = "none";
         const files = document.getElementById("files");
@@ -208,6 +199,61 @@
 
     console.log(formData); // log the email to the console
   }
+
+  function add_file(name, size, file_upl){
+    const id = counter;
+    counter++;
+
+    const desc = document.createElement("lib_row");
+    const desc_id = "desc_" + id;
+    desc.setAttribute("id", desc_id);
+    desc.classList.add("lib_card", "lib_justify_content_start");
+    desc.innerHTML = `
+    <lib_row lib_demo="8"><icon>description</icon>${name}</lib_row>`;
+
+    const info = document.createElement("lib_row");
+    const info_id = "info_" + id;
+    info.setAttribute("id", info_id);
+    info.classList.add("lib_card", "lib_justify_content_start");
+    info.innerHTML = `
+    <lib_row lib_demo="10 4"><icon>info</icon>${size.toFixed(2)} mb</lib_row>`;
+
+    const upl = document.createElement("lib_row");
+    const upl_id = "upl_" + id;
+    upl.setAttribute("id", upl_id);
+    upl.classList.add("lib_card", "lib_justify_content_start");
+    upl.innerHTML = `
+    <lib_row><icon onClick="upload_file(${id})">arrow_circle_up</icon></lib_row>`;
+
+    const del = document.createElement("lib_row");
+    const del_id = "del_" + id;
+    del.setAttribute("id", del_id);
+    del.classList.add("lib_card", "lib_justify_content_start");
+    del.innerHTML = `
+    <lib_row><icon>delete</icon></lib_row>`;
+    del.style.display = "none";
+
+    // Append the new item to the list of items
+    const list = document.querySelector("lib_grid");
+    list.appendChild(desc);
+    list.appendChild(info);
+    list.appendChild(upl);
+    list.appendChild(del);
+
+  }
+
+  function handleFileInputChange(event) {
+    const file_upl = event.target.files[0];
+    file = file_upl;
+    console.log('File name:', file_upl.name);
+    console.log('File size:', file_upl.size);
+    console.log('File type:', file_upl.type);
+
+    const size = file_upl.size / (1024*1024);
+
+    add_file(file_upl.name, size, file_upl);
+  }
+
 </script>
 
 
