@@ -111,16 +111,14 @@
     const email = user_email;
     const password = user_password;
 
+    let form = new FormData();
+    form.append(`email`, email);
+    form.append(`password`, password);
+    form.append(`file`, file);
+
     fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        email: email, 
-        password: password,
-        file: file
-        }),
+      body: form,
       mode: 'cors',
       credentials: 'omit'
       })

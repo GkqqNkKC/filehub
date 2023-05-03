@@ -1,6 +1,7 @@
 .vs
-*/node_modules
-*/package-lock.json
-*/package.json
-client_src/.sass-cache
+**/node_modules
+**/package-lock.json
+**/package.json
+**/.sass-cache
 client_src/*.css*
+db/files

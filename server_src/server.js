@@ -10,6 +10,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(require('body-parser').json());
+app.use(require('express-fileupload')());
 
 // open the database
 let db = new sqlite3.Database('../db/db.db');
@@ -67,6 +69,8 @@ app.post('/add-comment', (req, res) => {
 
 // function to upload a file
 app.post('/upload-file', (req, res) => {
+    console.log(`- upload-file: trying for ${JSON.stringify(req.body)}`);
+    
     const {
         email,
         password
@@ -77,18 +81,23 @@ app.post('/upload-file', (req, res) => {
     const userSql = 'SELECT * FROM users WHERE email = ? AND password = ?';
     db.get(userSql, [email, password], function (err, row) {
         if (err) {
+            console.log(`- upload-file: error: when checking user`);
             res.status(400).send('Error uploading file');
         } else if (row === undefined) {
+            console.log(`- upload-file: fail: user not authorized`);
             res.status(401).send('Unauthorized user');
         } else {
-            const sql = 'INSERT INTO files (owner, path) VALUES (?, ?)';
+            const sql = 'INSERT INTO files (id, path) VALUES (?, ?)';
             db.run(sql, [row.id, db_path], function (err) {
                 if (err) {
+                    console.log(`- upload-file: error: when inserting file entry`);
+                    console.log(`  - sql: INSERT INTO files (id, path) VALUES (${row.id}, ${db_path})`);
                     res.status(400).send('Error uploading file');
                 } else {
                     const file = req.files.file;
                     file.mv(local_path, function (err) {
                         if (err) {
+                            console.log(`- upload-file: error: when moving file`);
                             res.status(400).send('Error uploading file');
                         } else {
                             res.status(200).send('File uploaded successfully');
