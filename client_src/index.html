@@ -11,13 +11,13 @@
   <lib_row class="lib_align_self_center">File<lib_col style="padding: .25em; background: var(--accent); color: var(--lib_bg); border-radius: .25em;">Hub</lib_col></lib_row>
   <lib_row class="lib_justify_content_space_evenly" lib_each_child="child.style[`font-size`] = `10mm`;" style="width: 100%">
     <icon class="lib_card" lib_tooltip="See all file you have access to" id="files">folder_open</icon>
-    <icon style="display: none" lib_tooltip="View your profile" id="profile">person</icon>
+    <icon style="display: none; cursor: pointer;" lib_tooltip="View your profile" id="profile">person</icon>
     <label for="file-input">
-      <icon style="display: none" class="upload-icon" lib_tooltip="Upload a file" id="upload">add</icon>
+      <icon style="display: none; cursor: pointer;" class="upload-icon" lib_tooltip="Upload a file" id="upload">add</icon>
     </label>
     <input type="file" id="file-input" onchange="handleFileInputChange(event)" style="display: none">
-    <icon style="display: none" lib_tooltip="Logout" id="logout">logout</icon>
-    <icon lib_tooltip="Register" id="register" onclick="var element = document.getElementById('login_popup');
+    <icon style="display: none; cursor: pointer;" lib_tooltip="Logout" id="logout">logout</icon>
+    <icon lib_tooltip="Register" id="register" style="cursor: pointer;" onclick="var element = document.getElementById('login_popup');
                                           element.style.display = null;">add_circle</icon>
   </lib_row>
   <lib_col style="flex-grow: 1;"></lib_col>
@@ -48,7 +48,7 @@
     <lib_row lib_demo="3"><icon>download</icon></lib_row>
     <lib_row style="grid-column: 1/3;" lib_demo="10 8"><icon>info</icon></lib_row>
   </lib_grid>
-  <lib_col class="lib_card lib_align_items_start" style="width: 100%; height: 150px"></lib_col>
+  <lib_col class="lib_card lib_align_items_start" style="width: 100%; height: 150px;"></lib_col>
   <!-- <svg lib_each_child="child.setAttribute(`stroke`, `blue`); child.setAttribute(`stroke-linecap`, `round`); child.setAttribute(`stroke-width`, `.05`);" preserveAspectRatio="none" viewbox="0 0 1 1" class="lib_card cartesian" style="width: 100%; height: 150px; align-items: start; padding: calc(var(--lib_spacing) + 2.5%); overflow: visible"><g>
     <line x1="0" y1="0" x2=".25" y2=".75"></line>
     <line x1=".25" y1=".75" x2=".5" y2=".5"></line>
@@ -59,22 +59,14 @@
     <icon lib_tooltip="Download file">download</icon>
     <icon lib_tooltip="Reupload file with modifications">refresh</icon>
   </lib_row>
-  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;">
-    <lib_row lib_demo="7"><icon>face</icon></lib_row>
-    <lib_row lib_demo="5"><icon>edit</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="4"><icon>face</icon></lib_row>
-    <lib_row lib_demo="3"><icon>edit</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
-    <lib_row lib_demo="6"><icon>face</icon></lib_row>
-    <lib_row lib_demo="9"><icon>edit</icon></lib_row>
-    <lib_row><icon>delete</icon></lib_row>
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;" id="perm_grid">
+    <!-- here we add users to give permisions -->
   </lib_grid>
   <lib_row class="lib_justify_content_space_evenly" style="width: 100%;">
     <lib_row lib_tooltip="Default sharing mode" lib_demo="8">
       <icon style="flex-grow: 1">share</icon>
     </lib_row>
-    <icon lib_tooltip="Add a new person on the list">add</icon>
+    <icon lib_tooltip="Add a new person on the list" onclick="add_user_perm()">add</icon>
   </lib_row>
 </lib_col>
 <lib_row style="display: none" id="login_popup" class="lib_cover lib_bg_transparent layout_pad">
@@ -84,16 +76,16 @@
   </lib_col>
   <lib_col>
     <lib_col class="lib_card">
-      <lib_row class="lib_justify_content_start" style="width: 300px" ><icon>mail</icon><input type="text" placeholder="Email"></input></lib_row>
-      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password"></input></lib_row>
-      <lib_row><icon>login</icon>Login</lib_row>
+      <lib_row class="lib_justify_content_start" style="width: 300px" ><icon>mail</icon><input type="text" placeholder="Email" id="emailInputLog"></input></lib_row>
+      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password" id="passInputLog"></input></lib_row>
+      <lib_row onclick="login()" style="cursor: pointer;"><icon>login</icon>Login</lib_row>
     </lib_col>
     <lib_col class="lib_card">
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>mail</icon><input type="text" placeholder="Email" id="emailInputReg"></input></lib_row>
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password" id="passInputReg"></input></lib_row>
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Repeat password" id="passRepeatInputReg"></input></lib_row>
       <lib_row class="lib_wrap lib_justify_content_start" style="width: 300px" lib_demo="8 14 7 15 2 17 4 17"><icon>check_box_outline_blank</icon></lib_row>
-      <lib_row><icon onclick="register()">add</icon>Register</lib_row>
+      <lib_row onclick="register()" style="cursor: pointer;"><icon>add</icon>Register</lib_row>
     </lib_col>
   </lib_col>
 </lib_row>
@@ -105,6 +97,8 @@
   let user_email;
   let user_password;
   let file;
+  let logged = false;
+  let selected_file = null;
 
   function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
@@ -155,6 +149,11 @@
     formData.append("email", email);
     formData.append("password", password);
 
+    if (password !== passwordRepeat){
+      alert("Passwords do not match. Please try again.");
+      return;
+    }
+
     fetch(url, {
       method: 'POST',
       headers: {
@@ -171,6 +170,7 @@
       //handle response            
       console.log(response);
       if (response.status == 200){
+        logged = true;
         user_email = email;
         user_password = password; 
         const popup = document.getElementById("login_popup");
@@ -185,6 +185,8 @@
         logout.style.display = null;
         const register = document.getElementById("register");
         register.style.display = "none";
+
+        alert("You have successfully registered!");
       }
       })
       .then(data => {
@@ -207,7 +209,7 @@
     desc.setAttribute("id", desc_id);
     desc.classList.add("lib_card", "lib_justify_content_start");
     desc.innerHTML = `
-    <lib_row lib_demo="8"><icon>description</icon>${name}</lib_row>`;
+    <lib_row lib_demo="8" onclick="select_file(${id})"><icon>description</icon>${name}</lib_row>`;
 
     const info = document.createElement("lib_row");
     const info_id = "info_" + id;
@@ -220,6 +222,7 @@
     const upl_id = "upl_" + id;
     upl.setAttribute("id", upl_id);
     upl.classList.add("lib_card", "lib_justify_content_start");
+    upl.style.cursor = "pointer";
     upl.innerHTML = `
     <lib_row><icon onClick="upload_file(${id})">arrow_circle_up</icon></lib_row>`;
 
@@ -227,6 +230,7 @@
     const del_id = "del_" + id;
     del.setAttribute("id", del_id);
     del.classList.add("lib_card", "lib_justify_content_start");
+    del.style.cursor = "pointer";
     del.innerHTML = `
     <lib_row><icon>delete</icon></lib_row>`;
     del.style.display = "none";
@@ -250,6 +254,147 @@
     const size = file_upl.size / (1024*1024);
 
     add_file(file_upl.name, size, file_upl);
+  }
+
+  function login(){
+    const url = "http://127.0.0.1:7523/login";
+    const email = document.getElementById("emailInputLog").value;
+    const password = document.getElementById("passInputLog").value;
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        email: email, 
+        password: password
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      if (response.status == 200){
+        logged = true;
+        user_email = email;
+        user_password = password; 
+        const popup = document.getElementById("login_popup");
+        popup.style.display = "none";
+        const files = document.getElementById("files");
+        files.style.display = null;
+        const profile = document.getElementById("profile");
+        profile.style.display = null;
+        const upload = document.getElementById("upload");
+        upload.style.display = null;
+        const logout = document.getElementById("logout");
+        logout.style.display = null;
+        const register = document.getElementById("register");
+        register.style.display = "none";
+
+        alert("Welcome back!");
+      }
+      })
+      .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
+
+    console.log(formData); // log the email to the console
+  }
+
+  function add_user_perm(){
+    if (logged){
+      const id = counter;
+      counter++;
+
+      const newRow = document.createElement("lib_row");
+      const user_id = "user_" + id;
+      newRow.setAttribute("id", user_id);
+      newRow.classList.add("lib_card", "lib_justify_content_start");
+      newRow.style.width = "100%";
+      newRow.innerHTML = `
+        <icon>face</icon>
+        <input type="text" placeholder="User ID" style="font-size: 3mm; width: 100%;" id="idPerm_${id}">
+      `;
+
+      const checkboxRow = document.createElement("lib_row");
+      const check_id = "check_" + id;
+      checkboxRow.setAttribute("id", check_id);
+      checkboxRow.classList.add("lib_card", "lib_justify_content_start");
+      checkboxRow.style.width = "150px";
+      checkboxRow.style.fontSize = "3mm";
+      checkboxRow.innerHTML = `
+        <input type="checkbox" style="width: 20px;" id="readPerm_${id}">Read 
+        <input type="checkbox" style="width: 20px;" id="writePerm_${id}">Write
+      `;
+
+      const doneRow = document.createElement("lib_row");
+      const done_id = "done_" + id;
+      doneRow.setAttribute("id", done_id);
+      doneRow.classList.add("lib_card", "lib_justify_content_start");
+      doneRow.style.cursor = "pointer";
+      doneRow.innerHTML = `
+        <icon onclick="confirm_perm(${id})">done</icon>
+      `;
+
+      const deleteRow = document.createElement("lib_row");
+      const del_user_id = "del_user_" + id;
+      deleteRow.setAttribute("id", del_user_id);
+      deleteRow.classList.add("lib_card", "lib_justify_content_start");
+      deleteRow.style.cursor = "pointer";
+      deleteRow.style.display = "none";
+      deleteRow.innerHTML = `
+        <icon>delete</icon>
+      `;
+
+      // Add the new rows to the grid
+      const grid = document.getElementById("perm_grid");
+      grid.appendChild(newRow);
+      grid.appendChild(checkboxRow);
+      grid.appendChild(doneRow);
+      grid.appendChild(deleteRow);
+    }
+  }
+
+  function confirm_perm(id){
+    const done_id = "done_" + id;
+    const done_button = document.getElementById(done_id);
+    const del_id = "del_user_" + id;
+    const del_button = document.getElementById(del_id);
+
+    done_button.style.display = "none";
+    del_button.style.display = null;
+
+    const text_id = "idPerm_" + id;
+    const user = document.getElementById(text_id);
+    user.readOnly = true;
+
+    const read_id = "readPerm_" + id;
+    const read = document.getElementById(read_id);
+    read.disabled = true;
+
+    const write_id = "writePerm_" + id;
+    const write = document.getElementById(write_id);
+    write.disabled = true;
+
+  }
+
+  function select_file(id){
+    const desc_id = "desc_" + id;
+    const file = document.getElementById(desc_id);
+
+    selected_file = id;
+
+    file.style.border = "2px solid white";
   }
 
 </script>
