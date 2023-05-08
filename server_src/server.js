@@ -87,7 +87,7 @@ app.post('/upload-file', (req, res) => {
             console.log(`- upload-file: fail: user not authorized`);
             res.status(401).send('Unauthorized user');
         } else {
-            const sql = `INSERT INTO files (path) VALUES ("${db_path}")`;
+            const sql = `INSERT INTO files (path, name, size) VALUES ("${db_path}", "${req.files.file.name}", ${req.files.file.size})`;
             db.run(sql, function (err) {
                 if (err) {
                     console.log(err);
@@ -135,7 +135,8 @@ app.post('/get-files', (req, res) => {
     const { user } = req.body;
 
     const getUserIdSql = `select id from users where email = "${user}"`;
-    const getFilePermissionsSql = `select (select path from files b where b.id = a.file) path from file_permissions a where a.user = ?`;
+    // const getFilePermissionsSql = `select (select path from files b where b.id = a.file) path from file_permissions a where a.user = ?`;
+    const getFilePermissionsSql = `select a.path, a.name, a.description, a.size from files a where exists (select * from file_permissions b where b.user = ? and b.file = a.id)`;
 
     db.get(getUserIdSql, (err, row) => {
         if(err) {console.log(err); res.status(400).send('Error'); return;}
@@ -143,7 +144,7 @@ app.post('/get-files', (req, res) => {
         
         db.all(getFilePermissionsSql, [row.id], (err, rows) => {
             if(err) {console.log(err); res.status(400).send('Error'); return;}
-            res.status(200).send(rows.map(row => row.path));
+            res.status(200).send(rows);
         });
     });
 });

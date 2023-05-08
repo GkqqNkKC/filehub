@@ -17,7 +17,8 @@
     - <read/write> access to weave new spells within the scrolls
 
 📚 files - A celestial library of enchanted scrolls
-  - query: create table files (id integer primary key autoincrement, path text not null);
+  - ⚠️ this section is NOT updated yet
+  - query: create table files (id integer primary key autoincrement, path text not null, name text not null, description text, size integer not null);
   - path: the mystic trail leading to the scroll's lair
     - from the realm's heart, the final path unveils as `db/files/${db_path}`
     - behold, the sands of time (current timestamp) reveal the path's name
