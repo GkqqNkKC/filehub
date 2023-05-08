@@ -94,6 +94,7 @@ app.post('/upload-file', (req, res) => {
                     res.status(400).send('Error uploading file');
                 } else {
                     const file = req.files.file;
+                    let file_id = this.lastID;
                     file.mv(local_path, function (err) {
                         if (err) {
                             console.log(`- upload-file: error: when moving file`);
@@ -104,15 +105,15 @@ app.post('/upload-file', (req, res) => {
                             // get the id of the user and store it in the variable user_id
                             db.get(get_user_id, (err, row) => {
                                 if (err) {
-                                    console.log(`- upload-file: error: when getting user id`);
+                                    console.log(err);
                                     res.status(400).send('Error uploading file');
                                 } else {
                                     const user_id = row.id;
 
-                                    const permissionSql = `INSERT INTO file_permissions (file, user, permission) VALUES (${this.lastID}, ${user_id}, "rw")`;
+                                    const permissionSql = `INSERT INTO file_permissions (file, user, permission) VALUES (${file_id}, ${user_id}, "rw")`;
                                     db.run(permissionSql, function (err) {
                                         if (err) {
-                                            console.log(`- upload-file: error: when inserting file permissions`);
+                                            console.log(err);
                                             res.status(400).send('Error uploading file');
                                         } else {
                                             console.log(`- upload-file: success: file uploaded and permissions added`);
