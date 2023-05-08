@@ -136,11 +136,11 @@ app.post('/get-files', async (req, res) => {
 
     try {
         const getUserIdSql = `select id from users where email = ${email}`;
-        const { id: userId } = await db.get(getUserIdSql);
+        const { id: userId } = await db.run(getUserIdSql);
 
         const getFilePermissionsSql = `
             select (select path from files b where b.id = a.file) from file_permissions a where a.user = ?`;
-        const rows = await db.all(getFilePermissionsSql, [userId]);
+        const rows = await db.run(getFilePermissionsSql, [userId]);
 
         const files = rows.map(row => row.path);
         res.status(200).send(files);
