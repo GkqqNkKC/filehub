@@ -104,6 +104,8 @@
   let logged = false;
   let selected_file = null;
   let files;
+  let currTimeStmp;
+  let currPath;
 
   function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
@@ -240,7 +242,7 @@
     del.classList.add("lib_card", "lib_justify_content_start");
     del.style.cursor = "pointer";
     del.innerHTML = `
-    <lib_row><icon>delete</icon></lib_row>`;
+    <lib_row><icon onclick="delete_file()">delete</icon></lib_row>`;
     del.style.display = "none";
 
     // Append the new item to the list of items
@@ -397,6 +399,45 @@
     const write = document.getElementById(write_id);
     write.disabled = true;
 
+    console.log(user.value);
+    console.log(read.checked);
+    console.log(write.checked);
+
+    let perm;
+    if (read.checked && !write.checked){
+      perm = "r";
+    } else if (read.checked && write.checked)
+      perm = "rw";
+    
+    const url = "http://127.0.0.1:7523/share-file";
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        email: user_email, 
+        password: user_password,
+        timestamp: currTimeStmp,
+        recipientEmail: user.value,
+        permissions: perm
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      })
+      .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
+
   }
 
   function select_file(f){
@@ -406,7 +447,13 @@
     description.innerHTML = f;
 
     selected_file = f;
-    console.log(f);
+    for (let file of files){
+      if (file.name === f){
+        currTimeStmp = file.path.match(/\d+/)[0];
+        currPath = file.path;
+      }
+    }
+    console.log(currTimeStmp);
 
     //file.style.border = "2px solid white";
   }
@@ -438,6 +485,7 @@
         //handle data
         grid.innerHTML = ``;
         console.log(data);
+        files = data;
         for (let file of data){
           const size = file.size / (1024*1024);
           add_file_for_refresh(file.name, size)
@@ -473,7 +521,7 @@
     del.classList.add("lib_card", "lib_justify_content_start");
     del.style.cursor = "pointer";
     del.innerHTML = `
-    <lib_row><icon>delete</icon></lib_row>`;
+    <lib_row><icon onclick="delete_file()">delete</icon></lib_row>`;
 
     // Append the new item to the list of items
     const list = document.getElementById("uploaded_files");
@@ -527,6 +575,33 @@
         document.getElementById(add_id).style.display = "none";
         document.getElementById(comm_id).readOnly = true;
       }
+      })
+      .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
+  }
+
+  function delete_file(){
+    const url = "http://127.0.0.1:7523/delete-file";
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        username: user_email, 
+        path: currPath
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
       })
       .then(data => {
         //handle data
