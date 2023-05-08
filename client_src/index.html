@@ -32,8 +32,8 @@
   <lib_col class="lib_align_items_start" style="width: 100%" lib_demo="16 12 15"><lib_row><icon>update</icon>Latest updates</lib_row></lib_col>
 </lib_col>
 <lib_col class="lib_align_self_center" style="flex-grow: 1; height: 100%; max-width: 150mm;">
-  <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input></lib_row>
-  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content">
+  <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input><icon>refresh</icon></lib_row>
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content" id="uploaded_files">
     
   </lib_grid>
 </lib_col>
@@ -68,6 +68,10 @@
     </lib_row>
     <icon lib_tooltip="Add a new person on the list" style="cursor: pointer;" onclick="add_user_perm()">add</icon>
   </lib_row>
+  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;" id="comments_grid">
+    <!-- here we add comments -->
+    <input type="text"/>
+  </lib_grid>
 </lib_col>
 <lib_row style="display: none" id="login_popup" class="lib_cover lib_bg_transparent layout_pad">
   <lib_col>
@@ -236,7 +240,7 @@
     del.style.display = "none";
 
     // Append the new item to the list of items
-    const list = document.querySelector("lib_grid");
+    const list = document.getElementById("uploaded_files");
     list.appendChild(desc);
     list.appendChild(info);
     list.appendChild(upl);
