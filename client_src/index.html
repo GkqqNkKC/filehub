@@ -109,10 +109,12 @@
     const url = "http://127.0.0.1:7523/upload-file";
     const email = user_email;
     const password = user_password;
+    //const filename = file.name;
 
     let form = new FormData();
     form.append(`email`, email);
     form.append(`password`, password);
+    //form.append(`filename`, filename);
     form.append(`file`, file);
 
     fetch(url, {
@@ -215,7 +217,7 @@
     desc.classList.add("lib_card", "lib_justify_content_start");
     desc.innerHTML = `
     <lib_row lib_demo="8" ><icon>description</icon>${name}</lib_row>`;
-    desc.children[desc.children.length - 1].onclick = () => select_file(file_upl);
+    desc.children[desc.children.length - 1].onclick = () => select_file(file_upl.name);
 
     const info = document.createElement("lib_row");
     const info_id = "info_" + id;
@@ -302,6 +304,7 @@
         logout.style.display = null;
         const register = document.getElementById("register");
         register.style.display = "none";
+        refreh();
 
         alert("Welcome back!");
       } else if (response.status == 401){
@@ -400,7 +403,7 @@
     // const desc_id = "desc_" + id;
     // const file = document.getElementById(desc_id);
     const description = document.getElementById("file_name");
-    description.innerHTML = f.name;
+    description.innerHTML = f;
 
     selected_file = f;
     console.log(f);
@@ -427,16 +430,57 @@
       .then(response => {
       //handle response            
       console.log(response);
+      if (response.status == 200){
+        return response.json();
+      }
       })
       .then(data => {
         //handle data
+        grid.innerHTML = ``;
         console.log(data);
+        for (let file of data){
+          const size = file.size / (1024*1024);
+          add_file_for_refresh(file.name, size)
+        }
       })
       .catch(error => {
         //handle error
       });
+  }
 
-      grid.innerHTML = ``;
+  function add_file_for_refresh(name, size){
+    const id = counter;
+    counter++;
+
+    const desc = document.createElement("lib_row");
+    const desc_id = "desc_" + id;
+    desc.setAttribute("id", desc_id);
+    desc.classList.add("lib_card", "lib_justify_content_start");
+    desc.innerHTML = `
+    <lib_row lib_demo="8" ><icon>description</icon>${name}</lib_row>`;
+    desc.children[desc.children.length - 1].onclick = () => select_file(name);
+
+    const info = document.createElement("lib_row");
+    const info_id = "info_" + id;
+    info.setAttribute("id", info_id);
+    info.classList.add("lib_card", "lib_justify_content_start");
+    info.innerHTML = `
+    <lib_row lib_demo="10 4"><icon>info</icon>${size.toFixed(2)} mb</lib_row>`;
+
+    const del = document.createElement("lib_row");
+    const del_id = "del_" + id;
+    del.setAttribute("id", del_id);
+    del.classList.add("lib_card", "lib_justify_content_start");
+    del.style.cursor = "pointer";
+    del.innerHTML = `
+    <lib_row><icon>delete</icon></lib_row>`;
+
+    // Append the new item to the list of items
+    const list = document.getElementById("uploaded_files");
+    list.appendChild(desc);
+    list.appendChild(info);
+    list.appendChild(del);
+
   }
 
   function add_comment(){
