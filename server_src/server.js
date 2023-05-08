@@ -113,13 +113,45 @@ app.post('/get-files', (req, res) => {
     const {
         username
     } = req.body;
-    const sql = 'SELECT path FROM files WHERE user = ?';
+    const sql = 'select (select path from files b where b.id = a.file) from file_permissions a where a.user = ?';
     db.all(sql, [username], function (err, rows) {
         if (err) {
             res.status(400).send('Error getting files for user');
         } else {
             const files = rows.map(row => row.path);
             res.status(200).send(files);
+        }
+    });
+});
+
+// function to delete a file
+app.post('/delete-file', (req, res) => {
+    const {
+        username,
+        path
+    } = req.body;
+    const dbSql = 'SELECT * FROM files WHERE user = ? AND path = ?';
+    db.get(dbSql, [username, path], function (err, row) {
+        if (err) {
+            res.status(400).send('Error deleting file');
+        } else if (row === undefined) {
+            res.status(401).send('Unauthorized user or file not found');
+        } else {
+            const local_path = `../${path}`;
+            fs.unlink(local_path, function (err) {
+                if (err) {
+                    res.status(400).send('Error deleting file');
+                } else {
+                    const deleteSql = 'DELETE FROM files WHERE path = ?';
+                    db.run(deleteSql, [path], function (err) {
+                        if (err) {
+                            res.status(400).send('Error deleting file');
+                        } else {
+                            res.status(200).send('File deleted successfully');
+                        }
+                    });
+                }
+            });
         }
     });
 });
