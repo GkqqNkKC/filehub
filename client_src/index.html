@@ -32,15 +32,15 @@
   <lib_col class="lib_align_items_start" style="width: 100%" lib_demo="16 12 15"><lib_row><icon>update</icon>Latest updates</lib_row></lib_col>
 </lib_col>
 <lib_col class="lib_align_self_center" style="flex-grow: 1; height: 100%; max-width: 150mm;">
-  <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input><icon>refresh</icon></lib_row>
+  <lib_row class="lib_justify_content_start" style="width: 100%;"><icon>link</icon><input type="text" style="flex-grow: 1; text-align: start;" placeholder="Insert link here"></input><icon onclick="refreh()" style="cursor: pointer;">refresh</icon></lib_row>
   <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: auto auto max-content" id="uploaded_files">
-    
+    <!-- here we add files -->
   </lib_grid>
 </lib_col>
 <lib_col class="lib_align_self_center" style="width: 300px; height: 100%;">
   <!-- <icon style="font-size: 30mm; align-self: center; color: var(--lib_background_progress)">description</icon> -->
   <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="width: 100%; grid-template-columns: 1fr 1fr;">
-    <lib_row lib_demo="8"><icon>description</icon></lib_row>
+    <lib_row ><icon>description</icon><lib_txt id="file_name"></lib_txt></lib_row>
     <lib_row lib_demo="6"><icon>sd_card</icon></lib_row>
     <lib_row lib_demo="8"><icon>schedule</icon></lib_row>
     <lib_row lib_demo="3"><icon>bug_report</icon></lib_row>
@@ -68,10 +68,10 @@
     </lib_row>
     <icon lib_tooltip="Add a new person on the list" style="cursor: pointer;" onclick="add_user_perm()">add</icon>
   </lib_row>
-  <lib_grid lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;" id="comments_grid">
+  <lib_col lib_each_child="child.classList.add(`lib_card`, `lib_justify_content_start`);" style="grid-template-columns: 1fr max-content max-content; width: 100%;" id="comments_grid">
     <!-- here we add comments -->
-    <input type="text"/>
-  </lib_grid>
+    <lib_row><icon lib_tooltip="Add comment" onclick="add_comment()" style="cursor: pointer;">comment</icon></lib_row>
+  </lib_col>
 </lib_col>
 <lib_row style="display: none" id="login_popup" class="lib_cover lib_bg_transparent layout_pad">
   <lib_col>
@@ -86,8 +86,8 @@
     </lib_col>
     <lib_col class="lib_card">
       <lib_row class="lib_justify_content_start" style="width: 300px"><icon>mail</icon><input type="text" placeholder="Email" id="emailInputReg"></input></lib_row>
-      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password" id="passInputReg"></input></lib_row>
-      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Repeat password" id="passRepeatInputReg"></input></lib_row>
+      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="password" placeholder="Password" id="passInputReg"></input></lib_row>
+      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="password" placeholder="Repeat password" id="passRepeatInputReg"></input></lib_row>
       <lib_row class="lib_wrap lib_justify_content_start" style="width: 300px" lib_demo="8 14 7 15 2 17 4 17"><icon>check_box_outline_blank</icon></lib_row>
       <lib_row onclick="register()" style="cursor: pointer;"><icon>add</icon>Register</lib_row>
     </lib_col>
@@ -213,7 +213,8 @@
     desc.setAttribute("id", desc_id);
     desc.classList.add("lib_card", "lib_justify_content_start");
     desc.innerHTML = `
-    <lib_row lib_demo="8" onclick="select_file(${id})"><icon>description</icon>${name}</lib_row>`;
+    <lib_row lib_demo="8" ><icon>description</icon>${name}</lib_row>`;
+    desc.children[desc.children.length - 1].onclick = () => select_file(file_upl);
 
     const info = document.createElement("lib_row");
     const info_id = "info_" + id;
@@ -302,6 +303,8 @@
         register.style.display = "none";
 
         alert("Welcome back!");
+      } else if (response.status == 401){
+        alert("Incorrect email or password!");
       }
       })
       .then(data => {
@@ -392,13 +395,79 @@
 
   }
 
-  function select_file(id){
-    const desc_id = "desc_" + id;
-    const file = document.getElementById(desc_id);
+  function select_file(f){
+    // const desc_id = "desc_" + id;
+    // const file = document.getElementById(desc_id);
+    const description = document.getElementById("file_name");
+    description.innerHTML = f.name;
 
-    selected_file = id;
+    selected_file = f;
+    console.log(f);
 
-    file.style.border = "2px solid white";
+    //file.style.border = "2px solid white";
+  }
+
+  function refreh(){
+    const grid = document.getElementById("uploaded_files");
+
+    grid.innerHTML = ``;
+
+  }
+
+  function add_comment(){
+    if (logged && selected_file !== null){
+      const id = counter;
+      counter++;
+
+      const comm = document.createElement("lib_row");
+      const comm_id = "comm_" + id;
+      const add_id = "addcomm_" + id;
+      //comm.setAttribute("id", comm_id);
+      comm.classList.add("lib_card", "lib_justify_content_start");
+      comm.innerHTML = `
+      <lib_row lib_demo="8" ><icon>description</icon><input type="text" placeholder="Add comment..." id="${comm_id}"/><icon onclick="submit_comment(${id})" style="cursor: pointer;" id="${add_id}">add</icon></lib_row>`;
+
+      const grid = document.getElementById("comments_grid");
+      grid.appendChild(comm);
+    }
+  }
+
+  function submit_comment(id){
+    const url = "http://127.0.0.1:7523/add-comment";
+    const comm_id = "comm_" + id;
+    const add_id = "addcomm_" + id;
+    const str = document.getElementById(comm_id).value;
+    
+    console.log(str);
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        file: selected_file, 
+        user: user_email,
+        str: str
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      if (response.status == 200){
+        document.getElementById(add_id).style.display = "none";
+        document.getElementById(comm_id).readOnly = true;
+      }
+      })
+      .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
   }
 
 </script>
