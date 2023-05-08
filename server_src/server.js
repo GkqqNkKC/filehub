@@ -130,22 +130,26 @@ app.post('/upload-file', (req, res) => {
     });
 });
 
-
 // function to get all files for a user
-app.post('/get-files', (req, res) => {
-    const {
-        username
-    } = req.body;
-    const sql = 'select (select path from files b where b.id = a.file) from file_permissions a where a.user = ?';
-    db.all(sql, [username], function (err, rows) {
-        if (err) {
-            res.status(400).send('Error getting files for user');
-        } else {
-            const files = rows.map(row => row.path);
-            res.status(200).send(files);
-        }
-    });
+app.post('/get-files', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const getUserIdSql = `select id from users where email = ${email}`;
+        const { id: userId } = await db.get(getUserIdSql);
+
+        const getFilePermissionsSql = `
+            select (select path from files b where b.id = a.file) from file_permissions a where a.user = ?`;
+        const rows = await db.all(getFilePermissionsSql, [userId]);
+
+        const files = rows.map(row => row.path);
+        res.status(200).send(files);
+    } catch (err) {
+        console.log(`Error getting files for user ${email}:`, err);
+        res.status(400).send('Error getting files for user');
+    }
 });
+
 
 // function to delete a file
 app.post('/delete-file', (req, res) => {
