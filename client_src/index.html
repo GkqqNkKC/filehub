@@ -103,6 +103,7 @@
   let file;
   let logged = false;
   let selected_file = null;
+  let files;
 
   function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
@@ -410,8 +411,32 @@
   function refreh(){
     const grid = document.getElementById("uploaded_files");
 
-    grid.innerHTML = ``;
+    const url = "http://127.0.0.1:7523/get-files";
 
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        user: user_email,
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      })
+      .then(data => {
+        //handle data
+        console.log(data);
+      })
+      .catch(error => {
+        //handle error
+      });
+
+      grid.innerHTML = ``;
   }
 
   function add_comment(){
@@ -437,8 +462,6 @@
     const comm_id = "comm_" + id;
     const add_id = "addcomm_" + id;
     const str = document.getElementById(comm_id).value;
-    
-    console.log(str);
 
     fetch(url, {
       method: 'POST',
