@@ -66,7 +66,7 @@
     <lib_row lib_tooltip="Default sharing mode" lib_demo="8">
       <icon style="flex-grow: 1">share</icon>
     </lib_row>
-    <icon lib_tooltip="Add a new person on the list" onclick="add_user_perm()">add</icon>
+    <icon lib_tooltip="Add a new person on the list" style="cursor: pointer;" onclick="add_user_perm()">add</icon>
   </lib_row>
 </lib_col>
 <lib_row style="display: none" id="login_popup" class="lib_cover lib_bg_transparent layout_pad">
@@ -77,7 +77,7 @@
   <lib_col>
     <lib_col class="lib_card">
       <lib_row class="lib_justify_content_start" style="width: 300px" ><icon>mail</icon><input type="text" placeholder="Email" id="emailInputLog"></input></lib_row>
-      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="text" placeholder="Password" id="passInputLog"></input></lib_row>
+      <lib_row class="lib_justify_content_start" style="width: 300px"><icon>password</icon><input type="password" placeholder="Password" id="passInputLog"></input></lib_row>
       <lib_row onclick="login()" style="cursor: pointer;"><icon>login</icon>Login</lib_row>
     </lib_col>
     <lib_col class="lib_card">
