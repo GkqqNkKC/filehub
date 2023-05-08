@@ -70,7 +70,7 @@ app.post('/add-comment', (req, res) => {
 // function to upload a file
 app.post('/upload-file', (req, res) => {
     console.log(`- upload-file: trying for ${JSON.stringify(req.body)}`);
-    
+
     const {
         email,
         password
@@ -99,7 +99,19 @@ app.post('/upload-file', (req, res) => {
                             console.log(`- upload-file: error: when moving file`);
                             res.status(400).send('Error uploading file');
                         } else {
-                            res.status(200).send('File uploaded successfully');
+                            const get_user_id = `select id from users where email = ${email}`
+
+                            //get the id of the user and store it in the variable user_id
+
+                            const permissionSql = `INSERT INTO file_permissions (file, user, permission) VALUES (${this.lastID}, ${user_id}, "rw")`;
+                            db.run(permissionSql, function (err) {
+                                if (err) {
+                                    console.log(err);
+                                    res.status(400).send('Error uploading file');
+                                } else {
+                                    res.status(200).send('File uploaded successfully');
+                                }
+                            });
                         }
                     });
                 }
@@ -107,6 +119,7 @@ app.post('/upload-file', (req, res) => {
         }
     });
 });
+
 
 // function to get all files for a user
 app.post('/get-files', (req, res) => {
