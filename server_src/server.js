@@ -108,6 +108,23 @@ app.post('/upload-file', (req, res) => {
     });
 });
 
+// function to get all files for a user
+app.post('/get-files', (req, res) => {
+    const {
+        username
+    } = req.body;
+    const sql = 'SELECT path FROM files WHERE user = ?';
+    db.all(sql, [username], function (err, rows) {
+        if (err) {
+            res.status(400).send('Error getting files for user');
+        } else {
+            const files = rows.map(row => row.path);
+            res.status(200).send(files);
+        }
+    });
+});
+
+
 // function to download a file
 app.get('/files/:timestamp', (req, res) => {
     const timestamp = req.params.timestamp;
