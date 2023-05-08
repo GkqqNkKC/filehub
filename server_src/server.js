@@ -131,23 +131,21 @@ app.post('/upload-file', (req, res) => {
 });
 
 // function to get all files for a user
-app.post('/get-files', async (req, res) => {
-    const { email } = req.body;
+app.post('/get-files', (req, res) => {
+    const { user } = req.body;
 
-    try {
-        const getUserIdSql = `select id from users where email = ${email}`;
-        const { id: userId } = await db.run(getUserIdSql);
+    const getUserIdSql = `select id from users where email = "${user}"`;
+    const getFilePermissionsSql = `select (select path from files b where b.id = a.file) path from file_permissions a where a.user = ?`;
 
-        const getFilePermissionsSql = `
-            select (select path from files b where b.id = a.file) from file_permissions a where a.user = ?`;
-        const rows = await db.run(getFilePermissionsSql, [userId]);
-
-        const files = rows.map(row => row.path);
-        res.status(200).send(files);
-    } catch (err) {
-        console.log(`Error getting files for user ${email}:`, err);
-        res.status(400).send('Error getting files for user');
-    }
+    db.get(getUserIdSql, (err, row) => {
+        if(err) {console.log(err); res.status(400).send('Error'); return;}
+        console.log(`- getting files for user id: ${row.id}`);
+        
+        db.all(getFilePermissionsSql, [row.id], (err, rows) => {
+            if(err) {console.log(err); res.status(400).send('Error'); return;}
+            res.status(200).send(rows.map(row => row.path));
+        });
+    });
 });
 
 
