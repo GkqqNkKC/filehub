@@ -102,6 +102,12 @@ app.post('/upload-file', (req, res) => {
                             const get_user_id = `select id from users where email = ${email}`
 
                             //get the id of the user and store it in the variable user_id
+                            db.get(get_user_id, (err, row) => {
+                                if (err) {
+                                    console.log(`- upload-file: error: when getting user id`);
+                                    res.status(400).send('Error uploading file');
+                                } else {
+                                    const user_id = row.id;
 
                             const permissionSql = `INSERT INTO file_permissions (file, user, permission) VALUES (${this.lastID}, ${user_id}, "rw")`;
                             db.run(permissionSql, function (err) {
