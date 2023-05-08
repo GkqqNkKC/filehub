@@ -224,12 +224,21 @@ app.post('/share-file', (req, res) => {
                 } else if (recipientRow === undefined) {
                     res.status(404).send('Recipient not found');
                 } else {
-                    const sql = 'INSERT INTO file_shares (file, sender, recipient) VALUES (?, ?, ?)';
-                    db.run(sql, [db_path, row.id, recipientRow.id], function (err) {
+                    const fileSql = `SELECT id FROM files WHERE path = ?`;
+                    db.get(fileSql, [db_path], function (err, fileRow) {
                         if (err) {
                             res.status(400).send('Error sharing file');
+                        } else if (fileRow === undefined) {
+                            res.status(404).send('File not found');
                         } else {
-                            res.status(200).send('File shared successfully');
+                            const permissionSql = `INSERT INTO file_permissions(file, user, permission) VALUES (?, ?, "read")`;
+                            db.run(permissionSql, [fileRow.id, recipientRow.id], function (err) {
+                                if (err) {
+                                    res.status(400).send('Error sharing file');
+                                } else {
+                                    res.status(200).send('File shared successfully');
+                                }
+                            });
                         }
                     });
                 }
@@ -237,6 +246,7 @@ app.post('/share-file', (req, res) => {
         }
     });
 });
+
 
 // start the server
 app.listen(port, hostname, function () {
