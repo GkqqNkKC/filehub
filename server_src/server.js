@@ -207,7 +207,8 @@ app.post('/share-file', (req, res) => {
         email,
         password,
         timestamp,
-        recipientEmail
+        recipientEmail,
+        permissions
     } = req.body;
     const db_path = `db/files/${timestamp}`;
     const userSql = 'SELECT * FROM users WHERE email = ? AND password = ?';
@@ -231,8 +232,8 @@ app.post('/share-file', (req, res) => {
                         } else if (fileRow === undefined) {
                             res.status(404).send('File not found');
                         } else {
-                            const permissionSql = `INSERT INTO file_permissions(file, user, permission) VALUES (?, ?, "read")`;
-                            db.run(permissionSql, [fileRow.id, recipientRow.id], function (err) {
+                            const permissionSql = `INSERT INTO file_permissions(file, user, permission) VALUES (?, ?, ?)`;
+                            db.run(permissionSql, [fileRow.id, recipientRow.id, permissions], function (err) {
                                 if (err) {
                                     res.status(400).send('Error sharing file');
                                 } else {
