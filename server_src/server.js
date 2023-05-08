@@ -87,11 +87,11 @@ app.post('/upload-file', (req, res) => {
             console.log(`- upload-file: fail: user not authorized`);
             res.status(401).send('Unauthorized user');
         } else {
-            const sql = 'INSERT INTO files (id, path) VALUES (?, ?)';
-            db.run(sql, [row.id, db_path], function (err) {
+            const sql = 'INSERT INTO files (path) VALUES (\'?\')';
+            db.run(sql, [db_path], function (err) {
                 if (err) {
                     console.log(`- upload-file: error: when inserting file entry`);
-                    console.log(`  - sql: INSERT INTO files (id, path) VALUES (${row.id}, ${db_path})`);
+                    console.log(`  - sql: INSERT INTO files (path) VALUES ('${db_path}')`);
                     res.status(400).send('Error uploading file');
                 } else {
                     const file = req.files.file;
