@@ -156,30 +156,39 @@ app.post('/delete-file', (req, res) => {
         username,
         path
     } = req.body;
-    const dbSql = 'SELECT * FROM files WHERE user = ? AND path = ?';
-    db.get(dbSql, [username, path], function (err, row) {
-        if (err) {
-            res.status(400).send('Error deleting file');
-        } else if (row === undefined) {
-            res.status(401).send('Unauthorized user or file not found');
-        } else {
-            const local_path = `../${path}`;
-            fs.unlink(local_path, function (err) {
+    db.get(`select * from users where email = "${username}"`, (err, row) => {
+        if(err) {console.log(err); res.status(400).send(`Error`);}
+
+        db.get(`select * from files where path = "${path}"`, (err, row_2) => {
+            if(err) {console.log(err); res.status(400).send(`Error`);}
+
+            const dbSql = 'SELECT * FROM file_permissions WHERE user = ? AND file = ?';
+            db.get(dbSql, [row.id, row_2.id], function (err, row) {
                 if (err) {
+                    console.log(err);
                     res.status(400).send('Error deleting file');
+                } else if (row === undefined) {
+                    res.status(401).send('Unauthorized user or file not found');
                 } else {
-                    const deleteSql = 'DELETE FROM files WHERE path = ?';
-                    db.run(deleteSql, [path], function (err) {
+                    const local_path = `../${path}`;
+                    fs.unlink(local_path, function (err) {
                         if (err) {
                             res.status(400).send('Error deleting file');
                         } else {
-                            res.status(200).send('File deleted successfully');
+                            const deleteSql = 'DELETE FROM files WHERE path = ?';
+                            db.run(deleteSql, [path], function (err) {
+                                if (err) {
+                                    res.status(400).send('Error deleting file');
+                                } else {
+                                    res.status(200).send('File deleted successfully');
+                                }
+                            });
                         }
                     });
                 }
             });
-        }
-    });
+        });
+    })
 });
 
 
