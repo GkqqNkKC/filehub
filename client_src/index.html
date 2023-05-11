@@ -106,6 +106,7 @@
   let files;
   let currTimeStmp;
   let currPath;
+  let prevSelected = null;
 
   function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
@@ -219,7 +220,7 @@
     desc.classList.add("lib_card", "lib_justify_content_start");
     desc.innerHTML = `
     <lib_row lib_demo="8" ><icon>description</icon>${name}</lib_row>`;
-    desc.children[desc.children.length - 1].onclick = () => select_file(file_upl.name);
+    desc.onclick = () => select_file(file_upl.name, id);
 
     const info = document.createElement("lib_row");
     const info_id = "info_" + id;
@@ -440,12 +441,23 @@
 
   }
 
-  function select_file(f){
-    // const desc_id = "desc_" + id;
-    // const file = document.getElementById(desc_id);
+  function select_file(f, id){
+    const desc_id = "desc_" + id;
+    const file_obj = document.getElementById(desc_id);
     const description = document.getElementById("file_name");
     description.innerHTML = f;
 
+    // Add border to selected file
+    if (prevSelected === null){
+      file_obj.style.border = "1px solid white";
+      prevSelected = file_obj;
+    } else {
+      file_obj.style.border = "1px solid white";
+      prevSelected.style.border = null;
+      prevSelected = file_obj;
+    }
+
+    // Set time stamp and path for selected file
     selected_file = f;
     for (let file of files){
       if (file.name === f){
@@ -455,7 +467,6 @@
     }
     console.log(currTimeStmp);
 
-    //file.style.border = "2px solid white";
   }
 
   function refreh(){
@@ -506,7 +517,7 @@
     desc.classList.add("lib_card", "lib_justify_content_start");
     desc.innerHTML = `
     <lib_row lib_demo="8" ><icon>description</icon>${name}</lib_row>`;
-    desc.children[desc.children.length - 1].onclick = () => select_file(name);
+    desc.onclick = () => select_file(name, id);
 
     const info = document.createElement("lib_row");
     const info_id = "info_" + id;
