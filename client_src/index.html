@@ -129,6 +129,18 @@
       .then(response => {
       //handle response            
       console.log(response);
+      if (response.status == 200){
+        //change upload button to delete button
+        // const upl_id = "upl_" + id;
+        // const del_id = "del_" + id;
+
+        // const upload_button = document.getElementById(upl_id);
+        // upload_button.style.display = "none";
+        // const delete_button = document.getElementById(del_id);
+        // delete_button.style.display = null;
+
+        refreh();
+      }
       })
       .then(data => {
         //handle data
@@ -137,15 +149,6 @@
       .catch(error => {
         //handle error
       });
-
-    //change upload button to delete button
-    const upl_id = "upl_" + id;
-    const del_id = "del_" + id;
-
-    const upload_button = document.getElementById(upl_id);
-    upload_button.style.display = "none";
-    const delete_button = document.getElementById(del_id);
-    delete_button.style.display = null;
 
   }
 
@@ -532,7 +535,8 @@
     del.classList.add("lib_card", "lib_justify_content_start");
     del.style.cursor = "pointer";
     del.innerHTML = `
-    <lib_row><icon onclick="delete_file()">delete</icon></lib_row>`;
+    <lib_row><icon>delete</icon></lib_row>`;
+    del.onclick = () => delete_file(name, id);
 
     // Append the new item to the list of items
     const list = document.getElementById("uploaded_files");
@@ -596,31 +600,49 @@
       });
   }
 
-  function delete_file(){
-    const url = "http://127.0.0.1:7523/delete-file";
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        username: user_email, 
-        path: currPath
-        }),
-      mode: 'cors',
-      credentials: 'omit'
-      })
-      .then(response => {
-      //handle response            
-      console.log(response);
-      })
-      .then(data => {
-        //handle data
-        console.log(data);
-      })
-      .catch(error => {
-        //handle error
-      });
+  function delete_file(name, id){
+    // Select the file first
+    for (let file of files){
+      if (file.name === name){
+        currPath = file.path;
+      }
+    }
+    console.log(currPath);
+    if (confirm("Are you sure you want to delete \"" + name + "\"?")) {
+      // Send delete request
+      const url = "http://127.0.0.1:7523/delete-file";
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          username: user_email, 
+          path: currPath
+          }),
+        mode: 'cors',
+        credentials: 'omit'
+        })
+        .then(response => {
+        //handle response            
+        console.log(response);
+        if (response.status == 200){
+          const desc = document.getElementById("desc_" + id);
+          const info = document.getElementById("info_" + id);
+          const del = document.getElementById("del_" + id);
+          desc.remove();
+          info.remove();
+          del.remove();
+        }
+        })
+        .then(data => {
+          //handle data
+          console.log(data);
+        })
+        .catch(error => {
+          //handle error
+        });
+    }
   }
 
 </script>
