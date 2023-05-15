@@ -1,0 +1,67 @@
+// palette
+.theme_light {
+  --lib_bg_base:             hsl(0, 0%, 90%, 1);
+  --lib_bg_base_t:           hsl(0, 0%, 90%, .9);
+
+  --lib_bg_area:             hsl(0, 0%, 10%, .05);
+  --lib_bg_outline:          hsl(0, 0%, 10%, .2);
+
+  --lib_fg_area:             hsl(0, 0%, 25%, 1);
+  --lib_fg_outline:          hsl(0, 0%, 10%, 1);
+
+  --lib_fg_area_disabled:    hsl(0, 0%, 40%, 1);
+  --lib_fg_outline_disabled: hsl(0, 0%, 55%, 1);
+
+  color: var(--lib_fg_outline);
+}
+.theme_dark {
+  --lib_bg_base:             hsl(0, 0%, 10%, 1);
+  --lib_bg_base_t:           hsl(0, 0%, 10%, .9);
+
+  --lib_bg_area:             hsl(0, 0%, 90%, .05);
+  --lib_bg_outline:          hsl(0, 0%, 90%, .2);
+
+  --lib_fg_area:             hsl(0, 0%, 75%, 1);
+  --lib_fg_outline:          hsl(0, 0%, 90%, 1);
+
+  --lib_fg_area_disabled:    hsl(0, 0%, 60%, 1);
+  --lib_fg_outline_disabled: hsl(0, 0%, 45%, 1);
+
+  color: var(--lib_fg_outline);
+}
+
+// style
+.theme_round {
+  .lib_element {
+    border-radius: var(--lib_spacing);
+  }
+}
+.theme_compact {
+  .lib_card {
+    background: var(--lib_bg_area);
+  }
+}
+.theme_border {
+  .lib_card {
+    @extend .lib_border
+  }
+}
+
+/* [deprecated] */
+
+.light {
+  --lib_bg: var(--lib_bg_base);
+  --lib_bg_card: var(--lib_bg_area);
+  --lib_bg_border: var(--lib_bg_outline);
+  --lib_bg_transparent: var(--lib_base_t);
+  --lib_fg: var(--lib_fg_outline);
+  --lib_fg_disabled: var(--lib_fg_outline_disabled);
+}
+.dark {
+  --lib_bg: var(--lib_bg_base);
+  --lib_bg_card: var(--lib_bg_area);
+  --lib_bg_border: var(--lib_bg_outline);
+  --lib_bg_transparent: var(--lib_bg_base_t);
+  --lib_fg: var(--lib_fg_outline);
+  --lib_fg_disabled: var(--lib_fg_outline_disabled);
+}

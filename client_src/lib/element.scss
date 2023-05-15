@@ -1,37 +1,33 @@
 .lib_element {
-  /* use max-content by default, so the size of containers are predictable, unlike auto */
+  /* - use max-content by default, so the size of containers are predictable, unlike auto */
   width: max-content;
   height: max-content;
 
-  position: relative; /* required to use easily <position: absolute> in any container */
-  box-sizing: border-box;
-
-  /* no wrapping, just scrolling by default */
+  /* - no wrapping, just scrolling by default */
   white-space: nowrap;
   overflow: auto;
   flex-shrink: 0;
-
-  border-radius: var(--lib_spacing);
-
-  /* [scrollbar] */
+  
+  /* - scrollbar */
   &::-webkit-scrollbar {
     width: calc(3 * var(--lib_spacing)); /* Adjust the width of the scrollbar */
     height: calc(3 * var(--lib_spacing)); /* Adjust the width of the scrollbar */
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--lib_bg_border); /* Replace with the desired color */
     border-width: var(--lib_spacing);
     border-style: solid;
-    border-color: var(--lib_bg);
+    border-color: transparent;
     border-radius: calc(2 * var(--lib_spacing));
-  }
-  &::-webkit-scrollbar-corner {
-    background: var(--lib_bg); /* Replace with the desired color */
+    box-shadow: inset 0 0 10px 10px var(--lib_bg_outline)
   }
 
   font-family: "Roboto Mono", monospace; /* very useful if the symbols follow a grid */
+  --lib_spacing: 1mm; /* spacing should be enough so that elements can be distinguished */
 
+  position: relative; /* required to use easily <position: absolute> in any container */
+  box-sizing: border-box;
+
+  // - deprecated
   --lib_dark: hsl(0, 0%, 10%);
   --lib_light: hsl(0, 0%, 90%);
-  --lib_spacing: 1mm; /* spacing should be enough so that elements can be distinguished */
 }

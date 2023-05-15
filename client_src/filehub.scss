@@ -1,18 +1,18 @@
 @import "lib/include.scss";
+@import "lib/default_themes.scss";
 icon {
   @extend .lib_element;
   font-family: 'Material Symbols Rounded';
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
-
   color: var(--accent);
+  vertical-align: bottom;
 }
-lib_txt > icon {margin-top: -2px;}
 
 .lib_element {
   --accent: #ffa31a;
 }
 .lib_window {
-  font-size: 5mm;
+  font-size: 4mm;
 }
 .layout_pad {
   gap: 10mm;

@@ -1,21 +1,19 @@
 .lib_window {
-  background: var(--lib_bg);
+  background: var(--lib_bg_base);
   padding: var(--lib_spacing);
-  color: var(--lib_fg);
+  color: var(--lib_fg_outline);
   width: 100vw;
   height: 100vh;
   border-radius: 0px;
-  --lib_sel_color: var(--lib_bg_border);
 }
 
 .lib_border {
   padding: var(--lib_spacing);
-  border: 1px solid var(--lib_bg_border);
+  border: 1px solid var(--lib_bg_outline);
   border-bottom-width: 2px;
 }
 .lib_card {
   padding: var(--lib_spacing);
-  background: var(--lib_bg_card);
 }
 
 lib_txt.lib_wrap {
@@ -44,16 +42,6 @@ lib_txt.lib_wrap {
   border-radius: calc(var(--lib_spacing) / 2);
 }
 .lib_progress {
+  @extend .lib_card;
   z-index: 0;
-
-  border-radius: var(--lib_spacing);
-  padding: calc(var(--lib_spacing));
-
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--lib_bg_border);
-  border-bottom-width: 2px;
-
-  color: var(--lib_fg);
-  --lib_sel_color: var(--lib_bg_border);
 }

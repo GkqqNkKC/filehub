@@ -1,10 +1,9 @@
-/* - version: 2 */
+/* - version: 3 */
 
 @import "element.scss";
 @import "style_to_class.scss";
 @import "layout.scss";
 @import "classes.scss";
-@import "themes.scss";
 
 /* [internal] */
 
@@ -14,12 +13,12 @@
   position: absolute;
   border-radius: var(--lib_spacing);
   padding: var(--lib_spacing);
-  background: var(--lib_bg_transparent);
+  background: var(--lib_bg_base_t);
   z-index: 1;
   pointer-events: none;
 }
 lib_demo {
-  background: var(--lib_fg);
+  background: var(--lib_fg_area);
   height: .5em;
   border-radius: .5em;
   margin-top: .25em !important;
@@ -34,15 +33,15 @@ textarea, textarea:focus-visible, input, input:focus-visible {
   outline: unset;
   font-family: unset;
   font-size: unset;
-  caret-color: var(--lib_fg);
+  caret-color: var(--lib_fg_outline);
   text-align: start;
 }
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--lib_fg_disabled);
+  color: var(--lib_fg_outline_disabled);
   opacity: 1; /* Firefox */
 }
 ::selection {
-  background: var(--lib_sel_color);
+  background: var(--lib_bg_border);
 }
 
 /* [svg] */
@@ -56,5 +55,3 @@ svg.cartesian > g {
 svg.cartesian > g text {
   transform: scaleY(-1);
 }
-
-@import "experimental.scss";
