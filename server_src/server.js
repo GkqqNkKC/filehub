@@ -67,6 +67,19 @@ app.post('/add-comment', (req, res) => {
     });
 });
 
+// function to get comments for a file
+app.post('/get-comments', (req, res) => {
+    const { file } = req.body;
+    const sql = 'SELECT * FROM file_comments WHERE file = ?';
+    db.all(sql, [file], function (err, rows) {
+        if (err) {
+            res.status(400).send('Error retrieving comments');
+        } else {
+            res.status(200).send(rows);
+        }
+    });
+});
+
 // function to upload a file
 app.post('/upload-file', (req, res) => {
     console.log(`- upload-file: trying for ${JSON.stringify(req.body)}`);
