@@ -230,21 +230,21 @@ app.post('/share-file', (req, res) => {
             const recipientSql = 'SELECT * FROM users WHERE email = ?';
             db.get(recipientSql, [recipientEmail], function (err, recipientRow) {
                 if (err) {
-                    res.status(400).send('Error sharing file');
+                    res.status(402).send('Error sharing file');
                 } else if (recipientRow === undefined) {
-                    res.status(404).send('Recipient not found');
+                    res.status(403).send('Recipient not found');
                 } else {
                     const fileSql = `SELECT id FROM files WHERE path = ?`;
                     db.get(fileSql, [db_path], function (err, fileRow) {
                         if (err) {
-                            res.status(400).send('Error sharing file');
+                            res.status(404).send('Error sharing file');
                         } else if (fileRow === undefined) {
-                            res.status(404).send('File not found');
+                            res.status(405).send('File not found');
                         } else {
                             const permissionSql = `INSERT INTO file_permissions(file, user, permission) VALUES ('?', '?', '?')`;
                             db.run(permissionSql, [fileRow.id, recipientRow.id, permissions], function (err) {
                                 if (err) {
-                                    res.status(400).send('Error sharing file');
+                                    res.status(406).send('Error sharing file');
                                 } else {
                                     res.status(200).send('File shared successfully');
                                 }
