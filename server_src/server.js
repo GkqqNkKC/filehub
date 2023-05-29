@@ -241,10 +241,8 @@ app.post('/share-file', (req, res) => {
                         } else if (fileRow === undefined) {
                             res.status(405).send('File not found');
                         } else {
-                            const sel_file = parseInt(fileSql);
-                            const sel_user = parseInt(userSql);
-
-                            const permissionSql = `INSERT INTO file_permissions(${sel_file}, ${sel_user}, ${permissions}) VALUES ('?', '?', '?')`;
+                            console.log(`- executing sql: INSERT INTO file_permissions(file, user, permission) VALUES (${fileRow.id}, ${recipientRow.id}, ${permissions})`);
+                            const permissionSql = `INSERT INTO file_permissions(file, user, permission) VALUES (?, ?, ?)`;
                             db.run(permissionSql, [fileRow.id, recipientRow.id, permissions], function (err) {
                                 if (err) {
                                     res.status(406).send('Error sharing file');
