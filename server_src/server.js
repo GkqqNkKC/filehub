@@ -80,6 +80,20 @@ app.post('/get-comments', (req, res) => {
     });
 });
 
+// function to delete a comment
+app.delete('/delete-comment', (req, res) => {
+    const commentId = req.params.id;
+    const sql = 'DELETE FROM file_comments WHERE id = ?';
+    db.run(sql, [commentId], function (err) {
+        if (err) {
+            res.status(400).send('Error deleting comment');
+        } else {
+            res.status(200).send('Comment deleted successfully');
+        }
+    });
+});
+
+
 // function to upload a file
 app.post('/upload-file', (req, res) => {
     console.log(`- upload-file: trying for ${JSON.stringify(req.body)}`);
