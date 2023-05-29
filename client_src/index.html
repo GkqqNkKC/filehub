@@ -16,7 +16,7 @@
       <icon style="display: none; cursor: pointer;" class="upload-icon" lib_tooltip="Upload a file" id="upload">add</icon>
     </label>
     <input type="file" id="file-input" onchange="handleFileInputChange(event)" style="display: none">
-    <icon style="display: none; cursor: pointer;" lib_tooltip="Logout" id="logout">logout</icon>
+    <icon style="display: none; cursor: pointer;" lib_tooltip="Logout" id="logout" onClick={location.reload()}>logout</icon>
     <icon lib_tooltip="Register" id="register" style="cursor: pointer;" onclick="var element = document.getElementById('login_popup');
                                           element.style.display = null;">add_circle</icon>
   </lib_row>
@@ -108,6 +108,7 @@
   let currTimeStmp;
   let currPath;
   let prevSelected = null;
+  let comments;
 
   function upload_file(id) {
     const url = "http://127.0.0.1:7523/upload-file";
@@ -454,7 +455,7 @@
     if (prevSelected === null){
       file_obj.style.border = "1px solid white";
       prevSelected = file_obj;
-    } else {
+    } else if (prevSelected != file_obj) {
       file_obj.style.border = "1px solid white";
       prevSelected.style.border = null;
       prevSelected = file_obj;
@@ -470,6 +471,7 @@
     }
     console.log(currTimeStmp);
 
+    refresh_comments();
   }
 
   function refreh(){
@@ -565,6 +567,29 @@
     }
   }
 
+  function add_comment_refresh(comment){
+    if (logged && selected_file !== null){
+      const id = counter;
+      counter++;
+
+      const comm = document.createElement("lib_row");
+      const comm_id = "comm_" + id;
+      const del_id = "delcomm_" + id;
+      //comm.setAttribute("id", comm_id);
+      comm.classList.add("lib_card", "lib_justify_content_start");
+      comm.style.width = "100%";
+      comm.innerHTML = `
+      <lib_row style="width: 100%"><icon>description</icon><input type="text" id="${comm_id}" style="flex-grow: 1" /><icon onclick="delete_comment(${id})" style="cursor: pointer;" id="${del_id}">delete</icon></lib_row>`;
+
+      const grid = document.getElementById("comments_grid");
+      grid.appendChild(comm);
+
+      const c = document.getElementById("comm_" + id);
+      c.value = comment;
+      c.readOnly = true;
+    }
+  }
+
   function submit_comment(id){
     const url = "http://127.0.0.1:7523/add-comment";
     const comm_id = "comm_" + id;
@@ -590,6 +615,7 @@
       if (response.status == 200){
         document.getElementById(add_id).style.display = "none";
         document.getElementById(comm_id).readOnly = true;
+        refresh_comments();
       }
       })
       .then(data => {
@@ -646,6 +672,80 @@
     }
   }
 
+  function refresh_comments(){
+    const grid = document.getElementById("comments_grid");
+
+    const url = "http://127.0.0.1:7523/get-comments";
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        file: selected_file,
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      if (response.status == 200){
+        return response.json();
+      }
+      })
+      .then(data => {
+        //handle data
+        grid.innerHTML = `<lib_txt onclick="add_comment()"><icon style="cursor: pointer;">comment</icon> Add comment</lib_txt>`;
+        console.log(data);
+        comments = data;
+        for (let comm of data){
+          add_comment_refresh(comm.str);
+        }
+      })
+      .catch(error => {
+        //handle error
+      });
+  }
+
+  function delete_comment(id){
+    const url = "http://127.0.0.1:7523/delete-comment";
+
+    const comm_id = "comm_" + id;
+    const c = document.getElementById(comm_id);
+    let id_;
+
+    for (let comm of comments){
+      if (comm.str === c.value)
+        id_ = comm.id;
+    }
+
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        id: id_,
+        }),
+      mode: 'cors',
+      credentials: 'omit'
+      })
+      .then(response => {
+      //handle response            
+      console.log(response);
+      if (response.status == 200){
+        refresh_comments();
+      }
+      })
+      .then(data => {
+        //handle data
+      })
+      .catch(error => {
+        //handle error
+      });
+  }
 </script>
 
 
