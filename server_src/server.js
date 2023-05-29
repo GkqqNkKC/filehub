@@ -82,9 +82,9 @@ app.post('/get-comments', (req, res) => {
 
 // function to delete a comment
 app.delete('/delete-comment', (req, res) => {
-    const commentId = req.params.id;
+    const { id } = req.body;
     const sql = 'DELETE FROM file_comments WHERE id = ?';
-    db.run(sql, [commentId], function (err) {
+    db.run(sql, [id], function (err) {
         if (err) {
             res.status(400).send('Error deleting comment');
         } else {
@@ -92,6 +92,7 @@ app.delete('/delete-comment', (req, res) => {
         }
     });
 });
+
 
 
 // function to upload a file
